@@ -5,8 +5,10 @@ CC = c++
 
 S_PATH = sources/
 H_PATH = headers/
+T_PATH = templates/
 
 HEADERS = $(wildcard $(addsuffix /*.hpp,$(H_PATH)))
+TEMPLATES = $(wildcard $(addsuffix /*.tpp,$(T_PATH)))
 OBJ = $(addprefix $(OBJ_FOLDER)/,$(notdir $(SRC:.cpp=.o)))
 SRC = $(wildcard $(addsuffix /*.cpp,$(S_PATH)))
 
@@ -21,8 +23,8 @@ bonus : all
 $(NAME) : $(OBJ)
 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 
-$(OBJ_FOLDER)/%.o : sources/%.cpp $^ $(HEADERS) Makefile
-	$(CC) $(FLAGS) -iquote headers -c $< -o $@
+$(OBJ_FOLDER)/%.o : sources/%.cpp $^ $(HEADERS) $(TEMPLATES) Makefile
+	$(CC) $(FLAGS) -iquote headers -iquote templates -c $< -o $@
 
 clean :
 	rm -rf $(OBJ_FOLDER)
