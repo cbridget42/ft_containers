@@ -13,7 +13,7 @@ int main(void) {
 	if (test1 >= test2)
 		std::cout << "dude!\n";
 
-	std::vector<int> c;
+	std::vector<int> c(5, 0);
 	c.push_back(1);
 	c.push_back(1);
 
@@ -22,7 +22,10 @@ int main(void) {
 	c.push_back(1);
 	c.push_back(1);
 
-	std::cout << c.capacity() << ' ' << c.size() <<'\n'; 
+	std::cout << c.capacity() << ' ' << c.size() <<'\n';
+
+	ft::vector<int> test3((unsigned long)5, 0);
+	ft::vector<int> test4(test3);
 
 	return 0;
 }
