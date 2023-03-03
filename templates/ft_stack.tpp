@@ -15,9 +15,9 @@ namespace ft {
 			typedef typename Container::reference reference;
 			typedef typename Container::const_reference const_reference;
 
-			explicit stack(const Container& cont = Container());
-			~stack();
-			stack(const stack& other);
+			explicit stack(const Container& cont = Container()): c(cont) {}
+			stack(const stack& other): c(other.c) {}
+			~stack() {}
 			stack& operator=(const stack& other);
 
 			T& top() {return c.back();}
@@ -40,27 +40,12 @@ namespace ft {
 			friend bool operator>(const ft::stack<T, Container>& lhs, \
 					const ft::stack<T, Container>& rhs) {return lhs.c > rhs.c;}
 	};
-}
-
-template <typename T, typename Container>
-ft::stack<T, Container>::stack(const Container& cont) {
-	c = cont;
-}
-
-template <typename T, typename Container>
-ft::stack<T, Container>::~stack() {}
-
-template <typename T, typename Container>
-ft::stack<T, Container>::stack(const stack& other) {
-	c = other.c;
-}
-
-template <typename T, typename Container>
-ft::stack<T, Container>& ft::stack<T, Container>::operator=(const stack& other) {
-	if (*this != other) {
-		c = other.c;
+	template <typename T, typename Container>
+	stack<T, Container>& stack<T, Container>::operator=(const stack& other) {
+		if (*this != other)
+			c = other.c;
+		return *this;
 	}
-	return *this;
 }
 
 #endif
