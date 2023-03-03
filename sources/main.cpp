@@ -17,15 +17,20 @@ int main(void) {
 	c.push_back(1);
 	c.push_back(1);
 
-	std::cout << c.capacity() << ' ' << c.size() <<'\n';
+	std::cout << c.max_size()  <<'\n';
 
-	c.push_back(1);
-	c.push_back(1);
-
-	std::cout << c.capacity() << ' ' << c.size() <<'\n';
-
-	ft::vector<int> test3((unsigned long)5, 0);
+	ft::vector<int> test3(5, 0);
 	ft::vector<int> test4(test3);
+
+	test3 = test4;
+
+	test4.assign(10, 42);
+
+	std::cout << test4.at(5) << '\n';
+
+	const ft::vector<int> test5(test4);
+
+	std::cout << test5.max_size() << '\n';
 
 	return 0;
 }

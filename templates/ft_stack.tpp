@@ -42,7 +42,7 @@ namespace ft {
 	};
 	template <typename T, typename Container>
 	stack<T, Container>& stack<T, Container>::operator=(const stack& other) {
-		if (*this != other)
+		if (this != &other)
 			c = other.c;
 		return *this;
 	}
