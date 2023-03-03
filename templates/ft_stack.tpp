@@ -1,10 +1,10 @@
-#ifndef FT_STACK_HPP
-#define FT_STACK_HPP
+#ifndef FT_STACK_TPP
+#define FT_STACK_TPP
 
-# include <vector>
+#include <vector>
 
 namespace ft {
-	template <typename T, typename Container = std::vector<T> >
+	template <class T, class Container = std::vector<T> >
 	class stack {
 		protected:
 			Container c;
@@ -12,6 +12,8 @@ namespace ft {
 			typedef T value_type;
 			typedef Container container_type;
 			typedef typename Container::size_type size_type;
+			typedef typename Container::reference reference;
+			typedef typename Container::const_reference const_reference;
 
 			explicit stack(const Container& cont = Container());
 			~stack();

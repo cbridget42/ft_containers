@@ -13,5 +13,16 @@ int main(void) {
 	if (test1 >= test2)
 		std::cout << "dude!\n";
 
+	std::vector<int> c;
+	c.push_back(1);
+	c.push_back(1);
+
+	std::cout << c.capacity() << ' ' << c.size() <<'\n';
+
+	c.push_back(1);
+	c.push_back(1);
+
+	std::cout << c.capacity() << ' ' << c.size() <<'\n'; 
+
 	return 0;
 }
