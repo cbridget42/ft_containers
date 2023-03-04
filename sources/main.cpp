@@ -13,24 +13,35 @@ int main(void) {
 	if (test1 >= test2)
 		std::cout << "dude!\n";
 
-	std::vector<int> c(5, 0);
-	c.push_back(1);
-	c.push_back(1);
+	ft::vector<int> test3;
+	ft::vector<int> test4;
 
-	std::cout << c.max_size()  <<'\n';
+	test3.push_back(42);
+	test3.resize(5, 21);
 
-	ft::vector<int> test3(5, 0);
-	ft::vector<int> test4(test3);
+	test4.push_back(14);
+	test4.push_back(88);
 
-	test3 = test4;
+	for (unsigned int i = 0; i < test3.size(); ++i) {
+		std::cout << test3[i] << ' ';
+	}
+	std::cout << '\n';
+	for (unsigned int i = 0; i < test4.size(); ++i) {
+		std::cout << test4[i] << ' ';
+	}
 
-	test4.assign(10, 42);
+	test3.swap(test4);
+	std::cout << "\n\n";
+	for (unsigned int i = 0; i < test3.size(); ++i) {
+		std::cout << test3[i] << ' ';
+	}
+	std::cout << '\n';
+	for (unsigned int i = 0; i < test4.size(); ++i) {
+		std::cout << test4[i] << ' ';
+	}
+	std::cout << '\n';
 
-	std::cout << test4.at(5) << '\n';
-
-	const ft::vector<int> test5(test4);
-
-	std::cout << test5.max_size() << '\n';
+//	std::cout << "capacity: " << test3.capacity() << '\n';
 
 	return 0;
 }
