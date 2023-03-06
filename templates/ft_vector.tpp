@@ -2,6 +2,7 @@
 #define FT_VECTOR_TPP
 
 #include <memory>
+#include "ft_vector_iterator.tpp"
 
 #define _VEC vector<T, Allocator>
 
@@ -17,6 +18,8 @@ namespace ft {
 			typedef const value_type& const_reference;
 			typedef typename Allocator::pointer pointer;
 			typedef typename Allocator::const_pointer const_pointer;
+			typedef vector_iterator<T> iterator;
+			typedef vector_iterator<const T> const_iterator;
 			//iterator typedef should be here!!!
 
 		protected:
@@ -67,6 +70,10 @@ namespace ft {
 			void			resize(size_type count);
 			void			resize(size_type count, T value = T());
 			void			swap(vector& other);
+			iterator		begin() {return vector_iterator<T>(_ptr);}
+			const_iterator	begin() const {return vector_iterator<T>(_ptr);}
+			iterator		end() {return vector_iterator<T>(_ptr + _size);}
+			const_iterator	end() const {return vector_iterator<T>(_ptr + _size);}
 
 			private:
 				void		copy_array(const vector& other, size_type new_capacity);

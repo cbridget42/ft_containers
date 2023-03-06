@@ -13,33 +13,24 @@ int main(void) {
 	if (test1 >= test2)
 		std::cout << "dude!\n";
 
-	ft::vector<int> test3;
 	ft::vector<int> test4;
 
-	test3.push_back(42);
-	test3.resize(5, 21);
-
+	test4.push_back(42);
 	test4.push_back(14);
 	test4.push_back(88);
 
-	for (unsigned int i = 0; i < test3.size(); ++i) {
-		std::cout << test3[i] << ' ';
-	}
-	std::cout << '\n';
-	for (unsigned int i = 0; i < test4.size(); ++i) {
-		std::cout << test4[i] << ' ';
-	}
+	const ft::vector<int> test3(test4);
 
-	test3.swap(test4);
-	std::cout << "\n\n";
-	for (unsigned int i = 0; i < test3.size(); ++i) {
-		std::cout << test3[i] << ' ';
+	for (ft::vector<int>::const_iterator it = test3.begin(); it < test3.end(); ++it) {
+		std::cout << *it << ' ';
 	}
-	std::cout << '\n';
+/*	std::cout << '\n';
 	for (unsigned int i = 0; i < test4.size(); ++i) {
 		std::cout << test4[i] << ' ';
-	}
+	}*/
+
 	std::cout << '\n';
+
 
 //	std::cout << "capacity: " << test3.capacity() << '\n';
 

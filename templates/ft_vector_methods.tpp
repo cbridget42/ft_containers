@@ -97,11 +97,29 @@ namespace ft {
 		other._capacity = tmp;
 	}
 
+	template< class T, class Alloc >
+	bool operator==(const ft::vector<T, Alloc>& lhs, \
+				const ft::vector<T, Alloc>& rhs) {
+		if (lhs.size() != rhs.size())
+			return false;
+		for (unsigned long i = 0; i < lhs.size(); ++i) {
+			if (lhs[i] != rhs[i])
+				return false;
+		}
+		return true;
+	 }
+
+	template< class T, class Alloc >
+	bool operator!=(const ft::vector<T, Alloc>& lhs, \
+				const ft::vector<T, Alloc>& rhs) {
+		return !(lhs == rhs);
+	}
+
 /*	template< class T, class Alloc >
-	bool operator==( const ft::vector<T, Alloc>& lhs, \
-				const ft::vector<T, Alloc>& rhs ) {
+	bool operator<(const ft::vector<T, Alloc>& lhs, \
+				const ft::vector<T, Alloc>& rhs) {
 		
-	 }*/
+	}*/
 
 
 	template<class T, class Allocator>
