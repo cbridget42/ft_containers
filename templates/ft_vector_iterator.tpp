@@ -8,6 +8,7 @@ namespace ft {
 	class vector_iterator: public std::iterator<std::random_access_iterator_tag, T> {
 		private:
 			T* _ptr;
+			typedef vector_iterator<const T> c_it;
 		public:
 			vector_iterator(): _ptr(0) {}
 			explicit vector_iterator(T* ptr): _ptr(ptr) {}
@@ -27,12 +28,13 @@ namespace ft {
 			vector_iterator		operator+(const typename DIF_TYPE& n) {return vector_iterator(_ptr + n);}
 			vector_iterator		operator-(const typename DIF_TYPE& n) {return vector_iterator(_ptr - n);}
 			typename DIF_TYPE	operator-(const vector_iterator& rhs) {return this->_ptr - rhs._ptr;}
-			bool				operator<(const vector_iterator& rhs) {return this->_ptr < rhs._ptr;}
-			bool				operator>(const vector_iterator& rhs) {return this->_ptr > rhs._ptr;}
-			bool				operator<=(const vector_iterator& rhs) {return !(this->_ptr > rhs._ptr);}
-			bool				operator>=(const vector_iterator& rhs) {return !(this->_ptr < rhs._ptr);}
-			bool				operator==(const vector_iterator& rhs) {return this->_ptr == rhs._ptr;}
-			bool				operator!=(const vector_iterator& rhs) {return this->_ptr != rhs._ptr;}
+			friend bool			operator<(const vector_iterator& lhs, const vector_iterator& rhs) {return lhs._ptr < rhs._ptr;}
+			friend bool			operator>(const vector_iterator& lhs, const vector_iterator& rhs) {return lhs._ptr > rhs._ptr;}
+			friend bool			operator<=(const vector_iterator& lhs, const vector_iterator& rhs) {return !(lhs._ptr > rhs._ptr);}
+			friend bool			operator>=(const vector_iterator& lhs, const vector_iterator& rhs) {return !(lhs._ptr < rhs._ptr);}
+			friend bool			operator==(const vector_iterator& lhs, const vector_iterator& rhs) {return lhs._ptr == rhs._ptr;}
+			friend bool			operator!=(const vector_iterator& lhs, const vector_iterator& rhs) {return lhs._ptr != rhs._ptr;}
+			operator c_it() {return vector_iterator<const T>(this->_ptr);}
 	};
 
 	template <typename T>

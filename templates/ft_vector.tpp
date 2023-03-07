@@ -71,9 +71,9 @@ namespace ft {
 			void			resize(size_type count, T value = T());
 			void			swap(vector& other);
 			iterator		begin() {return vector_iterator<T>(_ptr);}
-			const_iterator	begin() const {return vector_iterator<T>(_ptr);}
+			const_iterator	begin() const {return vector_iterator<const T>(_ptr);}
 			iterator		end() {return vector_iterator<T>(_ptr + _size);}
-			const_iterator	end() const {return vector_iterator<T>(_ptr + _size);}
+			const_iterator	end() const {return vector_iterator<const T>(_ptr + _size);}
 
 			private:
 				void		copy_array(const vector& other, size_type new_capacity);
