@@ -35,6 +35,8 @@ int main(void) {
 	test4.push_back(14);
 	test4.push_back(88);
 
+	test4.at(1) = 21;
+
 //	ft::vector<int>::reverse_iterator rit = test4.rbegin();
 //	std::cout << *rit << '\n';
 

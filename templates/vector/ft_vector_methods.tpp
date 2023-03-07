@@ -1,8 +1,6 @@
 #ifndef FT_VECTOR_ACCESS_TPP
 #define FT_VECTOR_ACCESS_TPP
 
-#include "ft_vector.tpp"//delete it!!
-
 namespace ft {
 
 	template<class T, class Allocator>

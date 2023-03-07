@@ -1,14 +1,17 @@
 NAME = ft_containers
 OBJ_FOLDER = objects
-FLAGS = -Wall -Wextra -Werror -std=c++98
+FLAGS = -Wall -Wextra -Werror -Wshadow -Wno-shadow -fsanitize=address -std=c++98
 CC = c++
 
 S_PATH = sources/
 H_PATH = headers/
-T_PATH = templates/
+I_PATH = templates/iterators
+V_PATH = templates/vector
+ST_PATH = templates/stack
 
 HEADERS = $(wildcard $(addsuffix /*.hpp,$(H_PATH)))
-TEMPLATES = $(wildcard $(addsuffix /*.tpp,$(T_PATH)))
+TEMPLATES = $(wildcard $(addsuffix /*.tpp,$(I_PATH))) \
+$(wildcard $(addsuffix /*.tpp,$(V_PATH))) $(wildcard $(addsuffix /*.tpp,$(ST_PATH)))
 OBJ = $(addprefix $(OBJ_FOLDER)/,$(notdir $(SRC:.cpp=.o)))
 SRC = $(wildcard $(addsuffix /*.cpp,$(S_PATH)))
 
@@ -24,7 +27,7 @@ $(NAME) : $(OBJ)
 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 
 $(OBJ_FOLDER)/%.o : sources/%.cpp $^ $(HEADERS) $(TEMPLATES) Makefile
-	$(CC) $(FLAGS) -iquote headers -iquote templates -c $< -o $@
+	$(CC) $(FLAGS) -iquote headers -iquote templates/stack -iquote templates/vector -iquote templates/iterators -c $< -o $@
 
 clean :
 	rm -rf $(OBJ_FOLDER)
