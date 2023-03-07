@@ -1,7 +1,23 @@
 #include "ft_containers.hpp"
 
+
+class bla {
+	public:
+		int a;
+		int b;
+	bla(): a(42), b(21) {}
+};
+
+
 int main(void) {
 	std::cout << "containers!\n";
+
+//	ft::vector<bla> test;
+//	test.push_back(bla());
+//	ft::vector<bla>::reverse_iterator rit = test.rbegin();
+//	std::cout << rit->a;
+
+
 
 	ft::stack<int> test1;
 	ft::stack<int> test2;
@@ -19,9 +35,19 @@ int main(void) {
 	test4.push_back(14);
 	test4.push_back(88);
 
+//	ft::vector<int>::reverse_iterator rit = test4.rbegin();
+//	std::cout << *rit << '\n';
+
 	const ft::vector<int> test3(test4);
 
-	for (ft::vector<int>::const_iterator it = test3.begin(); it < test3.end(); ++it) {
+	ft::vector<int>::reverse_iterator it_test = test4.rbegin();
+	ft::vector<int>::const_reverse_iterator it(it_test);
+
+	it_test++;
+	if (it_test > it)
+		std::cout << "it works!\n";
+
+	for (; it < test4.rend(); ++it) {
 		std::cout << *it << ' ';
 	}
 /*	std::cout << '\n';

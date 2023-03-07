@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "ft_vector_iterator.tpp"
+#include "ft_reverse_iterator.tpp"
 
 #define _VEC vector<T, Allocator>
 
@@ -20,7 +21,8 @@ namespace ft {
 			typedef typename Allocator::const_pointer const_pointer;
 			typedef vector_iterator<T> iterator;
 			typedef vector_iterator<const T> const_iterator;
-			//iterator typedef should be here!!!
+			typedef ft::reverse_iterator<iterator> reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		protected:
 			T*			_ptr;
@@ -70,10 +72,15 @@ namespace ft {
 			void			resize(size_type count);
 			void			resize(size_type count, T value = T());
 			void			swap(vector& other);
-			iterator		begin() {return vector_iterator<T>(_ptr);}
-			const_iterator	begin() const {return vector_iterator<const T>(_ptr);}
-			iterator		end() {return vector_iterator<T>(_ptr + _size);}
-			const_iterator	end() const {return vector_iterator<const T>(_ptr + _size);}
+			iterator		begin() {return iterator(_ptr);}
+			const_iterator	begin() const {return const_iterator(_ptr);}
+			iterator		end() {return iterator(_ptr + _size);}
+			const_iterator	end() const {return const_iterator(_ptr + _size);}
+			reverse_iterator		rbegin() {return reverse_iterator(iterator(_ptr + _size));}
+			const_reverse_iterator	rbegin() const {return const_reverse_iterator(iterator(_ptr + _size));}
+			reverse_iterator		rend() {return reverse_iterator(iterator(_ptr));}
+			const_reverse_iterator	rend() const {return reverse_iterator(iterator(_ptr));}
+
 
 			private:
 				void		copy_array(const vector& other, size_type new_capacity);
