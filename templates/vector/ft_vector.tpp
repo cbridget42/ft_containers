@@ -61,8 +61,8 @@ namespace ft {
 			void			reserve(size_type new_cap);
 			size_type		capacity() const {return _capacity;}
 			void			clear();
-//			iterator		insert(const_iterator pos, const T& value);//do it latter!!!
-//			iterator		insert(const_iterator pos, size_type count, const T& value);//do it latter!!!
+			iterator		insert(const_iterator pos, const T& value);
+			iterator		insert(const_iterator pos, size_type count, const T& value);//do it latter!!!
 //			template< class InputIt >
 //			iterator insert(const_iterator pos, InputIt first, InputIt last);
 //			iterator		erase(iterator pos);//do it latter
@@ -81,9 +81,11 @@ namespace ft {
 			reverse_iterator		rend() {return reverse_iterator(iterator(_ptr));}
 			const_reverse_iterator	rend() const {return reverse_iterator(iterator(_ptr));}
 
-
 			private:
 				void		copy_array(const vector& other, size_type new_capacity);
+				iterator	copy_insert(const_iterator& pos, size_type count, const T& value);
+				void		insert_range(T* ptr, size_type &i, size_type count, const T& value);
+				iterator	insert_method();
 	};
 
 	template<class T, class Allocator>

@@ -1,6 +1,6 @@
 NAME = ft_containers
 OBJ_FOLDER = objects
-FLAGS = -Wall -Wextra -Werror -Wshadow -Wno-shadow -fsanitize=address -std=c++98
+FLAGS = -Wall -Wextra -Werror -Wshadow -Wno-shadow -fsanitize=address -std=c++98 -g3
 CC = c++
 
 S_PATH = sources/

@@ -33,7 +33,7 @@ namespace ft {
 
 	template <typename T>
 	vector_iterator<T>& vector_iterator<T>::operator=(const vector_iterator& other) {
-		if (this != other) {
+		if (this != &other) {
 			_ptr = other._ptr;
 		}
 		return *this;
