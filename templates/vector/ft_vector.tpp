@@ -2,6 +2,7 @@
 #define FT_VECTOR_TPP
 
 #include <memory>
+#include "ft_algorithm.tpp"
 #include "ft_vector_iterator.tpp"
 #include "ft_reverse_iterator.tpp"
 
@@ -144,6 +145,45 @@ namespace ft {
 				throw;
 			}
 		}
+	}
+
+	template< class T, class Alloc >
+	bool operator==(const ft::vector<T, Alloc>& lhs, \
+				const ft::vector<T, Alloc>& rhs) {
+		if (lhs.size() > rhs.size())
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+		else
+			return ft::equal(rhs.begin(), rhs.end(), lhs.begin());
+	}
+
+	template< class T, class Alloc >
+	bool operator!=(const ft::vector<T, Alloc>& lhs, \
+				const ft::vector<T, Alloc>& rhs) {
+		return !(lhs == rhs);
+	}
+
+	template< class T, class Alloc >
+	bool operator<(const ft::vector<T, Alloc>& lhs, \
+				const ft::vector<T, Alloc>& rhs) {
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+
+	template< class T, class Alloc >
+	bool operator<=( const ft::vector<T, Alloc>& lhs,
+				const ft::vector<T, Alloc>& rhs ) {
+		return !(lhs > rhs);
+	}
+
+	template< class T, class Alloc >
+	bool operator>( const ft::vector<T, Alloc>& lhs,
+				const ft::vector<T, Alloc>& rhs ) {
+		return ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
+	}
+
+	template< class T, class Alloc >
+	bool operator>=(const ft::vector<T, Alloc>& lhs, \
+				const ft::vector<T, Alloc>& rhs) {
+		return !(lhs < rhs);
 	}
 }
 

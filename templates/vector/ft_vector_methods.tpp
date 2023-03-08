@@ -144,31 +144,6 @@ namespace ft {
 		return this->end();
 	}
 
-	template< class T, class Alloc >
-	bool operator==(const ft::vector<T, Alloc>& lhs, \
-				const ft::vector<T, Alloc>& rhs) {
-		if (lhs.size() != rhs.size())
-			return false;
-		for (unsigned long i = 0; i < lhs.size(); ++i) {
-			if (lhs[i] != rhs[i])
-				return false;
-		}
-		return true;
-	}
-
-	template< class T, class Alloc >
-	bool operator!=(const ft::vector<T, Alloc>& lhs, \
-				const ft::vector<T, Alloc>& rhs) {
-		return !(lhs == rhs);
-	}
-
-/*	template< class T, class Alloc >
-	bool operator<(const ft::vector<T, Alloc>& lhs, \
-				const ft::vector<T, Alloc>& rhs) {
-		
-	}*/
-
-
 	template<class T, class Allocator>
 	void _VEC::copy_array(const vector& other, size_type new_capacity) {
 		T* tmp = _allocator.allocate(new_capacity);

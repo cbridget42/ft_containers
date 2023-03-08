@@ -55,7 +55,7 @@ int main(void) {
 
 //	std::cout << v1[0].y;
 
-	ft::stack<int> test1;
+/*	ft::stack<int> test1;
 	ft::stack<int> test2;
 
 	test1.push(1);
@@ -63,7 +63,7 @@ int main(void) {
 	test2.push(2);
 
 	if (test1 >= test2)
-		std::cout << "dude!\n";
+		std::cout << "dude!\n";*/
 
 	ft::vector<int> test4;
 
@@ -73,13 +73,20 @@ int main(void) {
 	test4.push_back(123);
 	test4.push_back(21);
 
+	ft::vector<int> test5(test4);
+
+//	test5.push_back(4);
+
+	if (test4 >= test5)
+		std::cout << "dude!\n";
+
 //	test4.at(1) = 21;
 
 //	std::cout << *(test4.insert(test4.begin() + 2, 6)) << '\n';
-	test4.erase(test4.begin() + 1, test4.end());
+//	test4.erase(test4.begin() + 1, test4.end());
 
-	for (unsigned int i = 0; i < test4.size(); ++i)
-		std::cout << test4[i] << ' ';
+//	for (unsigned int i = 0; i < test4.size(); ++i)
+//		std::cout << test4[i] << ' ';
 
 //	ft::vector<int>::reverse_iterator rit = test4.rbegin();
 //	std::cout << *rit << '\n';

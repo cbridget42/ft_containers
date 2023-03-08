@@ -8,10 +8,12 @@ H_PATH = headers/
 I_PATH = templates/iterators
 V_PATH = templates/vector
 ST_PATH = templates/stack
+O_PATH = templates/other
 
 HEADERS = $(wildcard $(addsuffix /*.hpp,$(H_PATH)))
 TEMPLATES = $(wildcard $(addsuffix /*.tpp,$(I_PATH))) \
-$(wildcard $(addsuffix /*.tpp,$(V_PATH))) $(wildcard $(addsuffix /*.tpp,$(ST_PATH)))
+$(wildcard $(addsuffix /*.tpp,$(V_PATH))) $(wildcard $(addsuffix /*.tpp,$(ST_PATH))) \
+$(wildcard $(addsuffix /*.tpp,$(O_PATH)))
 OBJ = $(addprefix $(OBJ_FOLDER)/,$(notdir $(SRC:.cpp=.o)))
 SRC = $(wildcard $(addsuffix /*.cpp,$(S_PATH)))
 
@@ -27,7 +29,8 @@ $(NAME) : $(OBJ)
 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 
 $(OBJ_FOLDER)/%.o : sources/%.cpp $^ $(HEADERS) $(TEMPLATES) Makefile
-	$(CC) $(FLAGS) -iquote headers -iquote templates/stack -iquote templates/vector -iquote templates/iterators -c $< -o $@
+	$(CC) $(FLAGS) -iquote headers -iquote templates/stack -iquote templates/vector \
+	-iquote templates/iterators -iquote templates/other -c $< -o $@
 
 clean :
 	rm -rf $(OBJ_FOLDER)
