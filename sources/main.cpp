@@ -8,6 +8,22 @@ class bla {
 	bla(): a(42), b(21) {}
 };
 
+class bla_bla {
+	public:
+		int *x;
+		static int y;
+		bla_bla() {x = new int;}
+		bla_bla(const bla_bla& other) {
+			(void)other;
+			if (y == 13)
+				throw 5;
+			x = new int;
+			y++;
+		}
+		~bla_bla() {delete x;}
+};
+
+int bla_bla::y = 0;
 
 int main(void) {
 	std::cout << "containers!\n";
@@ -17,8 +33,21 @@ int main(void) {
 //	ft::vector<bla>::reverse_iterator rit = test.rbegin();
 //	std::cout << rit->a;
 
+	ft::vector<bla_bla> v1;
+	v1.push_back(bla_bla());
+	v1.push_back(bla_bla());
+	v1.push_back(bla_bla());
+	v1.push_back(bla_bla());
+	v1.push_back(bla_bla());
+	try {
+		v1.insert(v1.begin() + 1, 3, bla_bla());
+	} catch (int) {
+		std::cout << "exception caught!";
+	}
 
-	ft::stack<int> test1;
+	std::cout << v1[0].y;
+
+/*	ft::stack<int> test1;
 	ft::stack<int> test2;
 
 	test1.push(1);
@@ -34,15 +63,15 @@ int main(void) {
 	test4.push_back(14);
 	test4.push_back(88);
 	test4.push_back(123);
-//	test4.push_back(21);
+	test4.push_back(21);
 
 //	test4.at(1) = 21;
 
-	std::cout << *--(test4.insert(test4.begin() + 1, 3, 6)) << '\n';
+	std::cout << *(test4.insert(test4.begin() + 2, 6)) << '\n';
 
 	for (unsigned int i = 0; i < test4.size(); ++i)
 		std::cout << test4[i] << ' ';
-
+*/
 //	ft::vector<int>::reverse_iterator rit = test4.rbegin();
 //	std::cout << *rit << '\n';
 

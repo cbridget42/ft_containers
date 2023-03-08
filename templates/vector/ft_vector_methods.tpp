@@ -99,37 +99,16 @@ namespace ft {
 	typename _VEC::iterator _VEC::insert(const_iterator pos, const T& value) {
 		if (_capacity < _size + 1)
 			return this->copy_insert(pos, 1, value);
-/*		typename vector<T>::iterator it = this->end() - 1;
-		try {
-			for (; it >= pos; --it)
-				_allocator.construct((it + 1).base(), *it);
-			_allocator.construct((it + 1).base(), value);
-			++it;
-		} catch (...) {
-			if (it == this->end() - 1)
-				throw;
-			for (typename vector<T>::iterator tmp = this->begin(); \
-				tmp != (this->end() + 1); ++tmp) {
-				if (tmp != it + 1)
-					_allocator.destroy(tmp.base());
-			}
-			_size = 0;
-			throw;
-		}
-		++_size;
-		return it;*/
+		return this->insert_method(pos, 1, value);
 	}
 
 	template<class T, class Allocator>
 	typename _VEC::iterator _VEC::insert(const_iterator pos, size_type count, const T& value) {
 		if (count == 0)
-			return _VEC::iterator(const_cast<int*>(pos.base()));
+			return _VEC::iterator(const_cast<T*>(pos.base()));
 		else if (_capacity < _size + count)
 			return this->copy_insert(pos, count, value);
-
-
-
-		return _VEC::iterator(const_cast<int*>(pos.base()));
+		return this->insert_method(pos, count, value);
 	}
 
 	template< class T, class Alloc >
@@ -170,7 +149,8 @@ namespace ft {
 				throw;
 			}
 		}
-		this->clear();
+		for (size_type i = 0; i < _size; ++i)
+			_allocator.destroy(_ptr + i);
 		if (_capacity)
 			_allocator.deallocate(_ptr, _capacity);
 		_ptr = tmp;
@@ -198,7 +178,8 @@ namespace ft {
 			_allocator.deallocate(tmp, (_capacity + count) * 2);
 			throw;
 		}
-		this->clear();
+		for (size_type i = 0; i < _size; ++i)
+			_allocator.destroy(_ptr + i);
 		if (_capacity)
 			_allocator.deallocate(_ptr, (_capacity + count) * 2);
 		_ptr = tmp;
@@ -225,10 +206,6 @@ namespace ft {
 				_allocator.construct((it + count).base(), *it);
 				_allocator.destroy(it.base());
 			}
-			i = pos - _ptr;
-//			this->insert_range(_ptr, i, count, value);
-//			_allocator.construct((it + 1).base(), value);
-//			++it;
 		} catch (...) {
 			if (it == this->end() - 1)
 				throw;
@@ -246,17 +223,17 @@ namespace ft {
 			_size = 0;
 			throw;
 		}
-		size_type i = 0;
+		size_type i = pos.base() - _ptr;
 		try {
 			this->insert_range(_ptr, i, count, value);
 			++it;
 		} catch (...) {
-			size_type m_pos = pos - _ptr;
+			size_type m_pos = pos.base() - _ptr;
 			for (size_type j = 0; j < _size + count; ++j) {
 				if (j < m_pos)
 					_allocator.destroy(_ptr + j);
 				else if (j >= m_pos && j < m_pos + count) {
-					if (j <= i)
+					if (j < i)
 						_allocator.destroy(_ptr + j);
 				} else
 					_allocator.destroy(_ptr + j);

@@ -62,7 +62,7 @@ namespace ft {
 			size_type		capacity() const {return _capacity;}
 			void			clear();
 			iterator		insert(const_iterator pos, const T& value);
-			iterator		insert(const_iterator pos, size_type count, const T& value);//do it latter!!!
+			iterator		insert(const_iterator pos, size_type count, const T& value);
 //			template< class InputIt >
 //			iterator insert(const_iterator pos, InputIt first, InputIt last);
 //			iterator		erase(iterator pos);//do it latter
@@ -85,7 +85,7 @@ namespace ft {
 				void		copy_array(const vector& other, size_type new_capacity);
 				iterator	copy_insert(const_iterator& pos, size_type count, const T& value);
 				void		insert_range(T* ptr, size_type &i, size_type count, const T& value);
-				iterator	insert_method();
+				iterator	insert_method(const_iterator& pos, size_type count, const T& value);
 	};
 
 	template<class T, class Allocator>
