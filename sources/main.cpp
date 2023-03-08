@@ -15,10 +15,17 @@ class bla_bla {
 		bla_bla() {x = new int;}
 		bla_bla(const bla_bla& other) {
 			(void)other;
-			if (y == 13)
+			if (y == 12)
 				throw 5;
 			x = new int;
 			y++;
+		}
+		bla_bla& operator=(const bla_bla& rhs) {
+			if (this != &rhs) {
+				delete x;
+				x = new int;
+			}
+			return *this;
 		}
 		~bla_bla() {delete x;}
 };
@@ -33,21 +40,22 @@ int main(void) {
 //	ft::vector<bla>::reverse_iterator rit = test.rbegin();
 //	std::cout << rit->a;
 
-	ft::vector<bla_bla> v1;
+/*	ft::vector<bla_bla> v1;
 	v1.push_back(bla_bla());
 	v1.push_back(bla_bla());
 	v1.push_back(bla_bla());
 	v1.push_back(bla_bla());
 	v1.push_back(bla_bla());
-	try {
-		v1.insert(v1.begin() + 1, 3, bla_bla());
-	} catch (int) {
-		std::cout << "exception caught!";
-	}
+	v1.erase(v1.begin() + 1, v1.end());*/
+//	try {
+//		v1.insert(v1.begin() + 1, 3, bla_bla());
+//	} catch (int) {
+//		std::cout << "exception caught!";
+//	}
 
-	std::cout << v1[0].y;
+//	std::cout << v1[0].y;
 
-/*	ft::stack<int> test1;
+	ft::stack<int> test1;
 	ft::stack<int> test2;
 
 	test1.push(1);
@@ -67,11 +75,12 @@ int main(void) {
 
 //	test4.at(1) = 21;
 
-	std::cout << *(test4.insert(test4.begin() + 2, 6)) << '\n';
+//	std::cout << *(test4.insert(test4.begin() + 2, 6)) << '\n';
+	test4.erase(test4.begin() + 1, test4.end());
 
 	for (unsigned int i = 0; i < test4.size(); ++i)
 		std::cout << test4[i] << ' ';
-*/
+
 //	ft::vector<int>::reverse_iterator rit = test4.rbegin();
 //	std::cout << *rit << '\n';
 

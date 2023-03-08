@@ -111,6 +111,39 @@ namespace ft {
 		return this->insert_method(pos, count, value);
 	}
 
+	template<class T, class Allocator>
+	typename _VEC::iterator _VEC::erase(iterator pos) {
+		try {
+			for (typename _VEC::iterator it = pos; it != this->end() - 1; ++it)
+				*it = *(it + 1);
+		} catch (...) {
+			this->clear();
+			throw;
+		}
+		_allocator.destroy(_ptr + _size - 1);
+		--_size;
+		return pos;
+	}
+
+	template<class T, class Allocator>
+	typename _VEC::iterator _VEC::erase(iterator first, iterator last) {
+		if (first == last)
+			return last;
+		size_type tmp = _size - (last - first);
+		try {
+			typename _VEC::iterator it = last;
+			for (; it != this->end(); ++it, ++first)
+				*first = *it;
+		} catch (...) {
+			this->clear();
+			throw;
+		}
+		for (;first != this->end(); ++first)
+			_allocator.destroy(first.base());
+		_size = tmp;
+		return this->end();
+	}
+
 	template< class T, class Alloc >
 	bool operator==(const ft::vector<T, Alloc>& lhs, \
 				const ft::vector<T, Alloc>& rhs) {
@@ -121,7 +154,7 @@ namespace ft {
 				return false;
 		}
 		return true;
-	 }
+	}
 
 	template< class T, class Alloc >
 	bool operator!=(const ft::vector<T, Alloc>& lhs, \

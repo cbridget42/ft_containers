@@ -65,8 +65,8 @@ namespace ft {
 			iterator		insert(const_iterator pos, size_type count, const T& value);
 //			template< class InputIt >
 //			iterator insert(const_iterator pos, InputIt first, InputIt last);
-//			iterator		erase(iterator pos);//do it latter
-//			iterator		erase(iterator first, iterator last);//do it latter
+			iterator		erase(iterator pos);
+			iterator		erase(iterator first, iterator last);
 			void			push_back( const T& value );
 			void			pop_back() {_allocator.destroy(_ptr + (--_size));}
 			void			resize(size_type count);
