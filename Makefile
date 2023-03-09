@@ -11,9 +11,9 @@ ST_PATH = templates/stack
 O_PATH = templates/other
 
 HEADERS = $(wildcard $(addsuffix /*.hpp,$(H_PATH)))
-TEMPLATES = $(wildcard $(addsuffix /*.tpp,$(I_PATH))) \
-$(wildcard $(addsuffix /*.tpp,$(V_PATH))) $(wildcard $(addsuffix /*.tpp,$(ST_PATH))) \
-$(wildcard $(addsuffix /*.tpp,$(O_PATH)))
+TEMPLATES = $(wildcard $(addsuffix /*.hpp,$(I_PATH))) \
+$(wildcard $(addsuffix /*.hpp,$(V_PATH))) $(wildcard $(addsuffix /*.hpp,$(ST_PATH))) \
+$(wildcard $(addsuffix /*.hpp,$(O_PATH)))
 OBJ = $(addprefix $(OBJ_FOLDER)/,$(notdir $(SRC:.cpp=.o)))
 SRC = $(wildcard $(addsuffix /*.cpp,$(S_PATH)))
 

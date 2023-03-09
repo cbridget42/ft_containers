@@ -73,20 +73,26 @@ int main(void) {
 	test4.push_back(123);
 	test4.push_back(21);
 
-	ft::vector<int> test5(test4);
+	ft::vector<int> test5(test4.begin() + 1, test4.end() - 1);
 
 //	test5.push_back(4);
 
 	if (test4 >= test5)
 		std::cout << "dude!\n";
 
+//	std::cout << !ft::is_integral<bla_bla>::value;
+
+//	test5.assign(test4.begin() + 1, test4.end() - 1);
+
 //	test4.at(1) = 21;
 
 //	std::cout << *(test4.insert(test4.begin() + 2, 6)) << '\n';
 //	test4.erase(test4.begin() + 1, test4.end());
 
-//	for (unsigned int i = 0; i < test4.size(); ++i)
-//		std::cout << test4[i] << ' ';
+	test5.insert(test5.begin() + 1, test4.begin(), test4.end());
+
+	for (unsigned int i = 0; i < test5.size(); ++i)
+		std::cout << test5[i] << ' ';
 
 //	ft::vector<int>::reverse_iterator rit = test4.rbegin();
 //	std::cout << *rit << '\n';

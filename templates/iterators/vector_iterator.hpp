@@ -1,5 +1,5 @@
-#ifndef FT_VECTOR_ITERATOR_TPP
-#define FT_VECTOR_ITERATOR_TPP
+#ifndef VECTOR_ITERATOR_HPP
+#define VECTOR_ITERATOR_HPP
 
 #define DIF_TYPE vector_iterator::difference_type
 

@@ -1,5 +1,5 @@
-#ifndef FT_REVERSE_ITERATOR_TPP
-#define FT_REVERSE_ITERATOR_TPP
+#ifndef REVERSE_ITERATOR_HPP
+#define REVERSE_ITERATOR_HPP
 
 namespace ft {
 	template <class Iter>

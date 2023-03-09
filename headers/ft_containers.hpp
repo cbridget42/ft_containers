@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "ft_stack.tpp"
-#include "ft_vector.tpp"
+#include "stack.hpp"
+#include "vector.hpp"
 
 #endif

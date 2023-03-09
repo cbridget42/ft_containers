@@ -1,5 +1,5 @@
-#ifndef FT_ITERATOR_TRAITS_TPP
-#define FT_ITERATOR_TRAITS_TPP
+#ifndef ITERATOR_TRAITS_HPP
+#define ITERATOR_TRAITS_HPP
 
 namespace ft {
 	template< class Iter >

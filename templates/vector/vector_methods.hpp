@@ -1,5 +1,5 @@
-#ifndef FT_VECTOR_ACCESS_TPP
-#define FT_VECTOR_ACCESS_TPP
+#ifndef VECTOR_METHODS_HPP
+#define VECTOR_METHODS_HPP
 
 namespace ft {
 
@@ -112,6 +112,18 @@ namespace ft {
 	}
 
 	template<class T, class Allocator>
+	template< class InputIt >
+	typename _VEC::iterator _VEC::insert(const_iterator pos, InputIt first, InputIt last, \
+					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type*) {
+		size_type count = last - first;
+		if (count == 0)
+			return _VEC::iterator(const_cast<T*>(pos.base()));
+		else if (_capacity < _size + count)
+			return this->copy_insert(pos, count, first);
+		return this->insert_method(pos, count, first);
+	}
+
+	template<class T, class Allocator>
 	typename _VEC::iterator _VEC::erase(iterator pos) {
 		try {
 			for (typename _VEC::iterator it = pos; it != this->end() - 1; ++it)
@@ -167,7 +179,8 @@ namespace ft {
 	}
 
 	template<class T, class Allocator>
-	typename _VEC::iterator _VEC::copy_insert(const_iterator& pos, size_type count, const T& value) {
+	template<class U>
+	typename _VEC::iterator _VEC::copy_insert(const_iterator& pos, size_type count, const U value) {
 		T* tmp = _allocator.allocate((_capacity + count) * 2);
 		size_type j, i;
 		i = j = 0;
@@ -197,7 +210,9 @@ namespace ft {
 	}
 
 	template<class T, class Allocator>
-	void _VEC::insert_range(T* ptr, size_type &i, size_type count, const T& value) {
+	template<class U>
+	void _VEC::insert_range(T* ptr, size_type &i, size_type count, const U& value, \
+			typename ft::enable_if<ft::is_integral<U>::value>::type*) {
 		size_type j = 0;
 		for (; j < count; ++j) {
 			_allocator.construct(ptr + i, value);
@@ -207,7 +222,20 @@ namespace ft {
 	}
 
 	template<class T, class Allocator>
-	typename _VEC::iterator _VEC::insert_method(const_iterator& pos, size_type count, const T& value) {
+	template<class U>
+	void _VEC::insert_range(T* ptr, size_type &i, size_type count, U value, \
+			typename ft::enable_if<!ft::is_integral<U>::value>::type*) {
+		size_type j = 0;
+		for (; j < count; ++j, ++value) {
+			_allocator.construct(ptr + i, *value);
+			if (j + 1 != count)
+				++i;
+		}
+	}
+
+	template<class T, class Allocator>
+	template<class U>
+	typename _VEC::iterator _VEC::insert_method(const_iterator& pos, size_type count, const U value) {
 		typename vector<T>::iterator it = this->end() - 1;
 		try {
 			for (; it >= pos; --it) {

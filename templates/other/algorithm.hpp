@@ -1,5 +1,5 @@
-#ifndef FT_ALGORITHM_TPP
-#define FT_ALGORITHM_TPP
+#ifndef ALGORITHM_HPP
+#define ALGORITHM_HPP
 
 namespace ft {
 	template< class InputIt1, class InputIt2 >

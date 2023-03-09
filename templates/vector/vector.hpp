@@ -1,10 +1,11 @@
-#ifndef FT_VECTOR_TPP
-#define FT_VECTOR_TPP
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 
 #include <memory>
-#include "ft_algorithm.tpp"
-#include "ft_vector_iterator.tpp"
-#include "ft_reverse_iterator.tpp"
+#include "algorithm.hpp"
+#include "vector_iterator.hpp"
+#include "reverse_iterator.hpp"
+#include "type_traits.hpp"
 
 #define _VEC vector<T, Allocator>
 
@@ -36,8 +37,9 @@ namespace ft {
 				_capacity(0), _allocator(alloc) {}
 			explicit vector(size_type count, const T& value = T(), \
 				const Allocator& alloc = Allocator());
-//			template< class InputIt >
-//			vector(InputIt first, InputIt last, const Allocator& alloc = Allocator());//do it latter!!!
+			template< class InputIt >
+			vector(InputIt first, InputIt last, const Allocator& alloc = Allocator(), \
+				typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0);
 			vector(const vector& other): _ptr(0), _size(0), _capacity(0), \
 				_allocator(other._allocator) {*this = other;}
 			~vector();
@@ -45,8 +47,9 @@ namespace ft {
 			reference		operator[](size_type pos) {return _ptr[pos];}
 			const_reference	operator[](size_type pos) const {return _ptr[pos];}
 			void			assign(size_type count, const T& value);
-//			template< class InputIt >
-//			void assign(InputIt first, InputIt last);//do it latter!!!
+			template< class InputIt>
+			void			assign(InputIt first, InputIt last, \
+					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0);
 			allocator_type	get_allocator() const {return _allocator;}
 			reference		at(size_type pos);
 			const_reference	at(size_type pos) const;
@@ -64,8 +67,9 @@ namespace ft {
 			void			clear();
 			iterator		insert(const_iterator pos, const T& value);
 			iterator		insert(const_iterator pos, size_type count, const T& value);
-//			template< class InputIt >
-//			iterator insert(const_iterator pos, InputIt first, InputIt last);
+			template< class InputIt >
+			iterator		insert(const_iterator pos, InputIt first, InputIt last, \
+					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0);
 			iterator		erase(iterator pos);
 			iterator		erase(iterator first, iterator last);
 			void			push_back( const T& value );
@@ -84,9 +88,16 @@ namespace ft {
 
 			private:
 				void		copy_array(const vector& other, size_type new_capacity);
-				iterator	copy_insert(const_iterator& pos, size_type count, const T& value);
-				void		insert_range(T* ptr, size_type &i, size_type count, const T& value);
-				iterator	insert_method(const_iterator& pos, size_type count, const T& value);
+				template<class U>
+				iterator	copy_insert(const_iterator& pos, size_type count, const U value);
+				template<class U>
+				void		insert_range(T* ptr, size_type &i, size_type count, const U& value, \
+						typename ft::enable_if<ft::is_integral<U>::value>::type* = 0);
+				template<class U>
+				void		insert_range(T* ptr, size_type &i, size_type count, const U value, \
+						typename ft::enable_if<!ft::is_integral<U>::value>::type* = 0);
+				template<class U>
+				iterator	insert_method(const_iterator& pos, size_type count, const U value);
 	};
 
 	template<class T, class Allocator>
@@ -99,6 +110,28 @@ namespace ft {
 		for(size_type i = 0; i < count; ++i) {
 			try {
 				_allocator.construct(_ptr + i, value);
+			} catch (...) {
+				for (size_type j = 0; j < i; ++j)
+					_allocator.destroy(_ptr + j);
+				_allocator.deallocate(_ptr, count);
+				throw;
+			}
+		}
+		_size = _capacity = count;
+	}
+
+	template<class T, class Allocator>
+	template< class InputIt >
+	_VEC::vector(InputIt first, InputIt last, const Allocator& alloc, \
+				typename ft::enable_if<!ft::is_integral<InputIt>::value>::type*): \
+				_ptr(0), _size(0), _capacity(0), _allocator(alloc) {
+		size_type count = last - first;
+		if (!count)
+			return;
+		_ptr = _allocator.allocate(count);
+		for(size_type i = 0; i < count; ++i, ++first) {
+			try {
+				_allocator.construct(_ptr + i, *first);
 			} catch (...) {
 				for (size_type j = 0; j < i; ++j)
 					_allocator.destroy(_ptr + j);
@@ -137,6 +170,34 @@ namespace ft {
 		for (size_type i = 0; i < _size; ++i) {
 			try {
 				_allocator.construct(_ptr + i, value);
+			} catch (...) {
+				for (size_type j = 0; j < i; ++j)
+					_allocator.destroy(_ptr + j);
+				_allocator.deallocate(_ptr, _capacity);
+				_capacity = _size = 0;
+				throw;
+			}
+		}
+	}
+
+	template<class T, class Allocator>
+	template<class InputIt>
+	void _VEC::assign(InputIt first, InputIt last, \
+		typename ft::enable_if<!ft::is_integral<InputIt>::value>::type*) {
+
+		size_type count = last - first;
+		for (size_type i = 0; i < _size; ++i)
+				_allocator.destroy(_ptr + i);
+		if (_capacity < count) {
+			_allocator.deallocate(_ptr, _capacity);
+			_capacity = _size = 0;
+			_ptr = _allocator.allocate(count);
+			_capacity = count;
+		}
+		_size = count;
+		for (size_type i = 0; i < _size; ++i, ++first) {
+			try {
+				_allocator.construct(_ptr + i, *first);
 			} catch (...) {
 				for (size_type j = 0; j < i; ++j)
 					_allocator.destroy(_ptr + j);
@@ -187,6 +248,6 @@ namespace ft {
 	}
 }
 
-#include "ft_vector_methods.tpp"
+#include "vector_methods.hpp"
 
 #endif
