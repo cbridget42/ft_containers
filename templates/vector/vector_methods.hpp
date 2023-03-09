@@ -48,7 +48,7 @@ namespace ft {
 		}
 	}
 
-	template<class T, class Allocator>
+/*	template<class T, class Allocator>
 	void _VEC::resize(size_type count) {
 		if (count > this->max_size())
 			throw ::std::length_error("count exceeds max_size!");
@@ -63,7 +63,7 @@ namespace ft {
 				_allocator.construct(_ptr + i, value_type());
 			_size = count;
 		}
-	}
+	}*/
 
 	template<class T, class Allocator>
 	void _VEC::resize(size_type count, T value) {
@@ -142,6 +142,7 @@ namespace ft {
 		if (first == last)
 			return last;
 		size_type tmp = _size - (last - first);
+		iterator res(first);
 		try {
 			typename _VEC::iterator it = last;
 			for (; it != this->end(); ++it, ++first)
@@ -153,7 +154,7 @@ namespace ft {
 		for (;first != this->end(); ++first)
 			_allocator.destroy(first.base());
 		_size = tmp;
-		return this->end();
+		return res;
 	}
 
 	template<class T, class Allocator>

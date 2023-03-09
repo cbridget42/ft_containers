@@ -1,4 +1,5 @@
 #include "ft_containers.hpp"
+#include <vector>
 
 
 class bla {
@@ -32,8 +33,8 @@ class bla_bla {
 
 int bla_bla::y = 0;
 
-int main(void) {
-	std::cout << "containers!\n";
+//int main(void) {
+//	std::cout << "containers!\n";
 
 //	ft::vector<bla> test;
 //	test.push_back(bla());
@@ -65,7 +66,7 @@ int main(void) {
 	if (test1 >= test2)
 		std::cout << "dude!\n";*/
 
-	ft::vector<int> test4;
+/*	std::vector<int> test4;
 
 	test4.push_back(42);
 	test4.push_back(14);
@@ -73,12 +74,12 @@ int main(void) {
 	test4.push_back(123);
 	test4.push_back(21);
 
-	ft::vector<int> test5(test4.begin() + 1, test4.end() - 1);
+//	const ft::vector<int> test5(test4.begin() + 1, test4.end() - 1);
 
 //	test5.push_back(4);
 
-	if (test4 >= test5)
-		std::cout << "dude!\n";
+//	if (test4 >= test5)
+//		std::cout << "dude!\n";
 
 //	std::cout << !ft::is_integral<bla_bla>::value;
 
@@ -89,11 +90,11 @@ int main(void) {
 //	std::cout << *(test4.insert(test4.begin() + 2, 6)) << '\n';
 //	test4.erase(test4.begin() + 1, test4.end());
 
-	test5.insert(test5.begin() + 1, test4.begin(), test4.end());
+	std::cout << *(test4.erase(test4.begin() + 1, test4.begin() + 3)) << '\n';
 
-	for (unsigned int i = 0; i < test5.size(); ++i)
-		std::cout << test5[i] << ' ';
-
+	for (unsigned int i = 0; i < test4.size(); ++i)
+		std::cout << test4[i] << ' ';
+*/
 //	ft::vector<int>::reverse_iterator rit = test4.rbegin();
 //	std::cout << *rit << '\n';
 
@@ -114,9 +115,114 @@ int main(void) {
 		std::cout << test4[i] << ' ';
 	}*/
 
-	std::cout << '\n';
+//	std::cout << '\n';
 
 //	std::cout << "capacity: " << test3.capacity() << '\n';
 
-	return 0;
+//	return 0;
+//}
+
+#define TESTED_NAMESPACE ft
+#define TESTED_TYPE foo<int>
+#define T_SIZE_TYPE typename TESTED_NAMESPACE::vector<T>::size_type
+#include <list>
+
+template <typename T>
+class foo {
+	public:
+		typedef T	value_type;
+
+		foo(void) : value(), _verbose(false) { };
+		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
+		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
+		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
+		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
+		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
+		foo &operator=(value_type src) { this->value = src; return *this; };
+		foo &operator=(foo const &src) {
+			if (this->_verbose || src._verbose)
+				std::cout << "foo::operator=(foo) CALLED" << std::endl;
+			this->value = src.value;
+			return *this;
+		};
+		value_type	getValue(void) const { return this->value; };
+		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+
+		operator value_type(void) const {
+			return value_type(this->value);
+		}
+	private:
+		value_type	value;
+		bool		_verbose;
+};
+
+template <typename T>
+std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
+	o << bar.getValue();
+	return o;
+}
+
+template <typename T>
+void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true)
+{
+	const T_SIZE_TYPE size = vct.size();
+	const T_SIZE_TYPE capacity = vct.capacity();
+	const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
+	// Cannot limit capacity's max value because it's implementation dependent
+
+	std::cout << "size: " << size << std::endl;
+	std::cout << "capacity: " << isCapacityOk << std::endl;
+	std::cout << "max_size: " << vct.max_size() << std::endl;
+	if (print_content)
+	{
+		typename TESTED_NAMESPACE::vector<T>::const_iterator it = vct.begin();
+		typename TESTED_NAMESPACE::vector<T>::const_iterator ite = vct.end();
+		std::cout << std::endl << "Content is:" << std::endl;
+		for (; it != ite; ++it)
+			std::cout << "- " << *it << std::endl;
+	}
+	std::cout << "###############################################" << std::endl;
+}
+
+int		main(void)
+{
+	const int size = 5;
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it(vct.rbegin());
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite(vct.rend());
+
+	for (int i = 1; it != ite; ++i)
+		*it++ = (i * 7);
+	printSize(vct, 1);
+
+	it = vct.rbegin();
+	ite = vct.rbegin();
+
+	std::cout << *(++ite) << std::endl;
+	std::cout << *(ite++) << std::endl;
+	std::cout << *ite++ << std::endl;
+	std::cout << *++ite << std::endl;
+
+	it->m();
+	ite->m();
+
+	std::cout << *(++it) << std::endl;
+	std::cout << *(it++) << std::endl;
+	std::cout << *it++ << std::endl;
+	std::cout << *++it << std::endl;
+
+	std::cout << *(--ite) << std::endl;
+	std::cout << *(ite--) << std::endl;
+	std::cout << *--ite << std::endl;
+	std::cout << *ite-- << std::endl;
+
+	(*it).m();
+	(*ite).m();
+
+	std::cout << *(--it) << std::endl;
+	std::cout << *(it--) << std::endl;
+	std::cout << *it-- << std::endl;
+	std::cout << *--it << std::endl;
+
+	return (0);
 }

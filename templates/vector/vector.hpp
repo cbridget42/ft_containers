@@ -2,10 +2,10 @@
 #define VECTOR_HPP
 
 #include <memory>
-#include "algorithm.hpp"
-#include "vector_iterator.hpp"
-#include "reverse_iterator.hpp"
-#include "type_traits.hpp"
+#include "../other/algorithm.hpp"
+#include "../iterators/vector_iterator.hpp"
+#include "../iterators/reverse_iterator.hpp"
+#include "../other/type_traits.hpp"
 
 #define _VEC vector<T, Allocator>
 
@@ -74,7 +74,6 @@ namespace ft {
 			iterator		erase(iterator first, iterator last);
 			void			push_back( const T& value );
 			void			pop_back() {_allocator.destroy(_ptr + (--_size));}
-			void			resize(size_type count);
 			void			resize(size_type count, T value = T());
 			void			swap(vector& other);
 			iterator		begin() {return iterator(_ptr);}
@@ -94,7 +93,7 @@ namespace ft {
 				void		insert_range(T* ptr, size_type &i, size_type count, const U& value, \
 						typename ft::enable_if<ft::is_integral<U>::value>::type* = 0);
 				template<class U>
-				void		insert_range(T* ptr, size_type &i, size_type count, const U value, \
+				void		insert_range(T* ptr, size_type &i, size_type count, U value, \
 						typename ft::enable_if<!ft::is_integral<U>::value>::type* = 0);
 				template<class U>
 				iterator	insert_method(const_iterator& pos, size_type count, const U value);

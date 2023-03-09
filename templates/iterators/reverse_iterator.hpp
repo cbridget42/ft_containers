@@ -15,7 +15,7 @@ namespace ft {
 			reverse_iterator(const reverse_iterator<U>& other): _iter(other.base()) {}
 			template<class U>
 			reverse_iterator& operator=(const reverse_iterator<U>& other) {
-				if (this != other) {
+				if (*this != other) {
 					_iter = other.base();
 				}
 				return *this;
@@ -26,7 +26,7 @@ namespace ft {
 			typename Iter::pointer		operator->() {return &(operator*());}
 			typename Iter::reference	operator*();
 			typename Iter::reference	operator[](const typename Iter::difference_type n) \
-			{return *(_iter - n);}
+			{return *(*this + n);}
 			reverse_iterator&	operator++();
 			reverse_iterator	operator++(int);
 			reverse_iterator&	operator--();
