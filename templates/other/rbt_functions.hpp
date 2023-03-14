@@ -1,8 +1,6 @@
 #ifndef RBT_FUNCTIONS_HPP
 #define RBT_FUNCTIONS_HPP
 
-#include "red_black_tree.hpp"
-
 namespace ft {
 
 	template <class T, class Compare, class Allocator>
@@ -121,7 +119,12 @@ namespace ft {
 	template <class T, class Compare, class Allocator>
 	void _RBT::insert(const T& val) {
 		Node<T>* z = _alloc.allocate(1);
-		_alloc.construct(z, Node<T>(val, 1));
+		try {
+			_alloc.construct(z, Node<T>(val, 1));
+		} catch(...) {
+			_alloc.deallocate(z, 1);
+			throw;
+		}
 		Node<T>* y = _nil;
 		Node<T>* x = _root;
 		while (x != _nil) {

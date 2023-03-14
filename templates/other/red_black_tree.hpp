@@ -17,7 +17,7 @@ namespace ft {
 			Allocator	_alloc;
 			size_type	_size;
 		public:
-			Rbt();
+			Rbt(Compare c);
 //			Rbt(const Rbt& other);//do it later!!
 			~Rbt();
 //			Rbt& operator=(const Rbt& other);//do it later!
@@ -43,7 +43,7 @@ namespace ft {
 	};
 
 	template <class T, class Compare, class Allocator>
-	_RBT::Rbt(): _comp(Compare()), _alloc(Allocator()), _size(0) {
+	_RBT::Rbt(Compare c): _comp(c), _alloc(Allocator()), _size(0) {
 		_nil = _alloc.allocate(1);
 		_root = _nil;
 		_nil->_is_red = 0;
@@ -58,5 +58,7 @@ namespace ft {
 		_alloc.deallocate(_nil, 1);
 	}
 }
+
+#include "rbt_functions.hpp"
 
 #endif
