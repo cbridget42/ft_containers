@@ -6,12 +6,22 @@
 namespace ft {
 
 	template <class T, class Compare, class Allocator>
-	_RBT::size_type _RBT::get_size() const {
+	typename _RBT::size_type _RBT::get_size() const {
 		return _size;
 	}
 
 	template <class T, class Compare, class Allocator>
-	Node<T>* _RBT::tree_search(T& key) {
+	Node<T>* _RBT::get_nil() const {
+		return _nil;
+	}
+
+	template <class T, class Compare, class Allocator>
+	Node<T>* _RBT::get_root() const {
+		return _root;
+	}
+
+	template <class T, class Compare, class Allocator>
+	Node<T>* _RBT::tree_search(const T& key) {
 		Node<T>* x = _root;
 		while (x != _nil && !(!_comp(key, x->_value) && !_comp(x->_value, key))) {
 			if (_comp(key, x->_value))
@@ -109,9 +119,9 @@ namespace ft {
 	}
 
 	template <class T, class Compare, class Allocator>
-	void _RBT::insert(T& val) {
+	void _RBT::insert(const T& val) {
 		Node<T>* z = _alloc.allocate(1);
-		_alloc.construct(z, Node(val, 1));
+		_alloc.construct(z, Node<T>(val, 1));
 		Node<T>* y = _nil;
 		Node<T>* x = _root;
 		while (x != _nil) {
@@ -137,7 +147,7 @@ namespace ft {
 	template <class T, class Compare, class Allocator>
 	void _RBT::insert_fixup(Node<T>* z) {
 		Node<T>* y;
-		while (z->_parent->_is_red) {
+		while (z != _nil && z->_parent->_is_red) {
 			if (z->_parent == z->_parent->_parent->_left) {
 				y = z->_parent->_parent->_right;
 				if (y->_is_red) {//case 1
@@ -184,6 +194,97 @@ namespace ft {
 		else
 			u->_parent->_right = v;
 		v->_parent = u->_parent;
+	}
+
+	template <class T, class Compare, class Allocator>
+	void _RBT::rb_delete(Node<T>* z) {
+		Node<T>* y = z;
+		Node<T>* x;
+		bool orig_color_y = y->_is_red;
+		if (z->_left == _nil) {
+			x = z->_right;
+			transplant(z, z->_right);
+		} else if (z->_right == _nil) {
+			x = z->_left;
+			transplant(z, z->_left);
+		} else {
+			y = tree_minimum(z->_right);
+			orig_color_y = y->_is_red;
+			x = y->_right;
+			if (y->_parent == z)
+				x->_parent = y;
+			else {
+				transplant(y, y->_right);
+				y->_right = z->_right;
+				y->_right->_parent = y;
+			}
+			transplant(z, y);
+			y->_left = z->_left;
+			y->_left->_parent = y;
+			y->_is_red = z->_is_red;
+		}
+		_alloc.destroy(z);
+		_alloc.deallocate(z, 1);
+		--_size;
+		if (!orig_color_y)
+			rb_delete_fixup(x);
+	}
+
+	template <class T, class Compare, class Allocator>
+	void _RBT::rb_delete_fixup(Node<T>* x) {
+		Node<T>* w;
+		while (x != _root && !x->_is_red) {
+			if (x == x->_parent->_left) {
+				w = x->_parent->_right;
+				if (w->_is_red) {//case 1
+					w->_is_red = 0;
+					x->_parent->_is_red = 1;
+					left_rotate(x->_parent);
+					w = x->_parent->_right;
+				}
+				if (!w->_left->_is_red && !w->_right->_is_red) {//case 2
+					w->_is_red = 1;
+					x = x->_parent;
+				} else {//case 4
+					if (!w->_right->_is_red) {//case 3
+						w->_left->_is_red = 0;
+						w->_is_red = 1;
+						right_rotate(w);
+						w = x->_parent->_right;
+					}
+					w->_is_red = x->_parent->_is_red;
+					x->_parent->_is_red = 0;
+					w->_right->_is_red = 0;
+					left_rotate(x->_parent);
+					x = _root;
+				}
+			} else {
+				w = x->_parent->_left;
+				if (w->_is_red) {
+					w->_is_red = 0;
+					x->_parent->_is_red = 1;
+					right_rotate(x->_parent);
+					w = x->_parent->_left;
+				}
+				if (!w->_right->_is_red && !w->_left->_is_red) {
+					w->_is_red = 1;
+					x = x->_parent;
+				} else {
+					if (!w->_left->_is_red) {
+						w->_right->_is_red = 0;
+						w->_is_red = 1;
+						left_rotate(w);
+						w = x->_parent->_left;
+					}
+					w->_is_red = x->_parent->_is_red;
+					x->_parent->_is_red = 0;
+					w->_left->_is_red = 0;
+					right_rotate(x->_parent);
+					x = _root;
+				}
+			}
+		}
+		x->_is_red = 0;
 	}
 
 }

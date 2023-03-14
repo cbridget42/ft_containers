@@ -23,8 +23,11 @@ namespace ft {
 //			Rbt& operator=(const Rbt& other);//do it later!
 
 			size_type	get_size() const;
-			void		insert(T& val);
-			Node<T>*	tree_search(T& key);
+			Node<T>*	get_nil() const;
+			Node<T>*	get_root() const;
+			void		insert(const T& val);
+			void		rb_delete(Node<T>* z);
+			Node<T>*	tree_search(const T& key);
 			Node<T>*	tree_minimum(Node<T>* x);
 			Node<T>*	tree_maximum(Node<T>* x);
 			Node<T>*	tree_successor(Node<T>* x);
@@ -36,13 +39,15 @@ namespace ft {
 			void		right_rotate(Node<T>* x);
 			void		insert_fixup(Node<T>* z);
 			void		transplant(Node<T>* u, Node<T>* v);
+			void		rb_delete_fixup(Node<T>* x);
 	};
 
 	template <class T, class Compare, class Allocator>
-	_RBT::Rbt(): _comp(Compare()), _alloc(_alloc()), _size(0) {
+	_RBT::Rbt(): _comp(Compare()), _alloc(Allocator()), _size(0) {
 		_nil = _alloc.allocate(1);
 		_root = _nil;
-		_nil->_is_red = _nil->_parent = 0;
+		_nil->_is_red = 0;
+		_nil->_parent = 0;
 		_nil->_right = _nil->_left = _root;
 	}
 
@@ -50,7 +55,7 @@ namespace ft {
 	_RBT::~Rbt() {
 		if (_root != _nil)
 			delete_tree(_root);
-		_alloc.deallocate(_nil);
+		_alloc.deallocate(_nil, 1);
 	}
 }
 

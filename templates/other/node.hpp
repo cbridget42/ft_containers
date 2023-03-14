@@ -11,7 +11,7 @@ namespace ft {
 		Node*	_parent;
 		bool	_is_red;
 
-		Node(T& val = T(), bool c = 0): _value(val), _right(0), _left(0), \
+		Node(const T& val = T(), bool c = 0): _value(val), _right(0), _left(0), \
 			_parent(0), _is_red(c) {}
 		Node(const Node& other): _value(other._value), \
 			_right(other._right), _left(other._left), \
