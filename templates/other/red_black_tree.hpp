@@ -2,6 +2,8 @@
 #define RED_BLACK_TREE_HPP
 
 #include "node.hpp"
+#include "utility.hpp"
+#include "map_iterator.hpp"
 
 #define _RBT Rbt<T, Compare, Allocator>
 
@@ -9,7 +11,8 @@ namespace ft {
 	template <class T, class Compare, class Allocator>
 	class Rbt {
 		public:
-			typedef unsigned long size_type;
+			typedef unsigned long				size_type;
+			typedef map_iterator<T, Node<T> >	iterator;
 		private:
 			Node<T>*	_root;
 			Node<T>*	_nil;
@@ -25,13 +28,13 @@ namespace ft {
 			size_type	get_size() const;
 			Node<T>*	get_nil() const;
 			Node<T>*	get_root() const;
-			void		insert(const T& val);
 			void		rb_delete(Node<T>* z);
 			Node<T>*	tree_search(const T& key);
 			Node<T>*	tree_minimum(Node<T>* x);
 			Node<T>*	tree_maximum(Node<T>* x);
 			Node<T>*	tree_successor(Node<T>* x);
 			Node<T>*	tree_predecessor(Node<T>* x);
+			ft::pair<iterator, bool> insert(const T& val);
 
 		private:
 			void		delete_tree(Node<T>* x);

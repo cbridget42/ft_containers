@@ -3,13 +3,14 @@
 
 namespace ft {
 	template <class T, class N>
-	class map_iterator: public: std::iterator<std::bidirectional_iterator_tag, T> {
+	class map_iterator: public std::iterator<std::bidirectional_iterator_tag, T> {
 		private:
 			N*	_ptr;
 			N*	_nil;
 		public:
+			typedef N* n_pointer;
 			map_iterator(): _ptr(0), _nil(0) {}
-			map_iterator(const N*& p, const N*& n): _ptr(p), _nil(n) {}
+			map_iterator(const n_pointer& p, const n_pointer& n): _ptr(p), _nil(n) {}
 			map_iterator(const map_iterator& other): _ptr(other._ptr), _nil(other._nil) {}
 			map_iterator& operator=(const map_iterator& other);
 			operator map_iterator<const T, N>() {return map_iterator<const T, N>(this->_ptr, this->_nil);}
@@ -36,7 +37,7 @@ namespace ft {
 
 	template <class T, class N>
 	map_iterator<T, N>& map_iterator<T, N>::operator--() {
-		if (x->_left != _nil)
+		if (_ptr->_left != _nil)
 			return maximum();
 		N* x = _ptr;
 		_ptr = _ptr->_parent;
@@ -59,10 +60,10 @@ namespace ft {
 		if (_ptr->_right != _nil)
 			return minimum();
 		N* x = _ptr;
-		_prt = _ptr->_parent;
+		_ptr = _ptr->_parent;
 		while (_ptr != _nil && x == _ptr->_right) {
 			x = _ptr;
-			_prt = _ptr->_parent;
+			_ptr = _ptr->_parent;
 		}
 		return *this;
 	}

@@ -117,6 +117,50 @@ namespace ft {
 	}
 
 	template <class T, class Compare, class Allocator>
+	ft::pair<typename _RBT::iterator, bool> _RBT::insert(const T& val) {
+		Node<T>* y = _nil;
+		Node<T>* x = _root;
+		while (x != _nil && !(!_comp(val, x->_value) && !_comp(x->_value, val))) {
+			y = x;
+			if (_comp(val, x->_value))
+				x = x->_left;
+			else
+				x = x->_right;
+		}
+		if (x != _nil)
+			return ft::make_pair(iterator(x, _nil), false);
+		Node<T>* z = _alloc.allocate(1);
+		try {
+			_alloc.construct(z, Node<T>(val, 1));
+		} catch(...) {
+			_alloc.deallocate(z, 1);
+			throw;
+		}
+/*		Node<T>* y = _nil;
+		Node<T>* x = _root;
+		while (x != _nil && !(!_comp(key, x->_value) && !_comp(x->_value, key))) {
+			y = x;
+			if (_comp(z->_value, x->_value))
+				x = x->_left;
+			else
+				x = x->_right;
+		}*/
+		z->_parent = y;
+		if (y == _nil) {
+			_root = z;
+			_nil->_right = _nil->_left = _root;
+		} else if (_comp(z->_value, y->_value))
+			y->_left = z;
+		else
+			y->_right = z;
+		z->_left = z->_right = _nil;
+		++_size;
+		insert_fixup(z);
+		return ft::make_pair(iterator(z, _nil), false);
+	}
+
+/*
+template <class T, class Compare, class Allocator>
 	void _RBT::insert(const T& val) {
 		Node<T>* z = _alloc.allocate(1);
 		try {
@@ -146,6 +190,7 @@ namespace ft {
 		++_size;
 		insert_fixup(z);
 	}
+*/
 
 	template <class T, class Compare, class Allocator>
 	void _RBT::insert_fixup(Node<T>* z) {
