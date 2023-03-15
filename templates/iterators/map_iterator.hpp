@@ -14,9 +14,9 @@ namespace ft {
 			map_iterator(const map_iterator& other): _ptr(other._ptr), _nil(other._nil) {}
 			map_iterator& operator=(const map_iterator& other);
 			operator map_iterator<const T, N>() {return map_iterator<const T, N>(this->_ptr, this->_nil);}
-			T*					base() const {return &_ptr->_value;}
-			T*					operator->() {return &_ptr->_value;}
-			N&					operator*() {return _ptr->value;}
+			typename map_iterator::pointer		base() const {return &_ptr->_value;}
+			typename map_iterator::pointer		operator->() {return &_ptr->_value;}
+			typename map_iterator::reference	operator*() {return _ptr->_value;}
 			map_iterator&		operator++();
 			map_iterator		operator++(int);
 			map_iterator&		operator--();
@@ -37,8 +37,10 @@ namespace ft {
 
 	template <class T, class N>
 	map_iterator<T, N>& map_iterator<T, N>::operator--() {
-		if (_ptr->_left != _nil)
+		if (_ptr->_left != _nil) {
+			_ptr = _ptr->_left;
 			return maximum();
+		}
 		N* x = _ptr;
 		_ptr = _ptr->_parent;
 		while (_ptr != _nil && x == _ptr->_left) {
@@ -57,8 +59,10 @@ namespace ft {
 
 	template <class T, class N>
 	map_iterator<T, N>& map_iterator<T, N>::operator++() {
-		if (_ptr->_right != _nil)
+		if (_ptr->_right != _nil) {
+			_ptr = _ptr->_right;
 			return minimum();
+		}
 		N* x = _ptr;
 		_ptr = _ptr->_parent;
 		while (_ptr != _nil && x == _ptr->_right) {

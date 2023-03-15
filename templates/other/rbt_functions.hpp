@@ -4,8 +4,24 @@
 namespace ft {
 
 	template <class T, class Compare, class Allocator>
+	void _RBT::clear() {
+		if (_root != _nil) {
+			delete_tree(_root);
+			_root = _nil;
+			_nil->_left = _nil->_right = _root;
+			_size = 0;
+		}
+	}
+	
+	template <class T, class Compare, class Allocator>
 	typename _RBT::size_type _RBT::get_size() const {
 		return _size;
+	}
+
+	template <class T, class Compare, class Allocator>
+	typename _RBT::size_type _RBT::max_size() const {
+		return static_cast<size_type>(std::numeric_limits<long>::max() / \
+		sizeof(ft::Node<T>));
 	}
 
 	template <class T, class Compare, class Allocator>
@@ -19,7 +35,7 @@ namespace ft {
 	}
 
 	template <class T, class Compare, class Allocator>
-	Node<T>* _RBT::tree_search(const T& key) {
+	Node<T>* _RBT::tree_search(const T& key) const {
 		Node<T>* x = _root;
 		while (x != _nil && !(!_comp(key, x->_value) && !_comp(x->_value, key))) {
 			if (_comp(key, x->_value))
@@ -31,14 +47,14 @@ namespace ft {
 	}
 
 	template <class T, class Compare, class Allocator>
-	Node<T>* _RBT::tree_minimum(Node<T>* x) {
+	Node<T>* _RBT::tree_minimum(Node<T>* x) const {
 		while (x->_left != _nil)
 			x = x->_left;
 		return x;
 	}
 
 	template <class T, class Compare, class Allocator>
-	Node<T>* _RBT::tree_maximum(Node<T>* x) {
+	Node<T>* _RBT::tree_maximum(Node<T>* x) const {
 		while (x->_right != _nil)
 			x = x->_right;
 		return x;
@@ -136,15 +152,6 @@ namespace ft {
 			_alloc.deallocate(z, 1);
 			throw;
 		}
-/*		Node<T>* y = _nil;
-		Node<T>* x = _root;
-		while (x != _nil && !(!_comp(key, x->_value) && !_comp(x->_value, key))) {
-			y = x;
-			if (_comp(z->_value, x->_value))
-				x = x->_left;
-			else
-				x = x->_right;
-		}*/
 		z->_parent = y;
 		if (y == _nil) {
 			_root = z;
@@ -158,39 +165,6 @@ namespace ft {
 		insert_fixup(z);
 		return ft::make_pair(iterator(z, _nil), false);
 	}
-
-/*
-template <class T, class Compare, class Allocator>
-	void _RBT::insert(const T& val) {
-		Node<T>* z = _alloc.allocate(1);
-		try {
-			_alloc.construct(z, Node<T>(val, 1));
-		} catch(...) {
-			_alloc.deallocate(z, 1);
-			throw;
-		}
-		Node<T>* y = _nil;
-		Node<T>* x = _root;
-		while (x != _nil) {
-			y = x;
-			if (_comp(z->_value, x->_value))
-				x = x->_left;
-			else
-				x = x->_right;
-		}
-		z->_parent = y;
-		if (y == _nil) {
-			_root = z;
-			_nil->_right = _nil->_left = _root;
-		} else if (_comp(z->_value, y->_value))
-			y->_left = z;
-		else
-			y->_right = z;
-		z->_left = z->_right = _nil;
-		++_size;
-		insert_fixup(z);
-	}
-*/
 
 	template <class T, class Compare, class Allocator>
 	void _RBT::insert_fixup(Node<T>* z) {

@@ -27,8 +27,8 @@ namespace ft {
 			typedef const value_type&							const_reference;
 			typedef typename Allocator::pointer					pointer;
 			typedef typename Allocator::const_pointer			const_pointer;
-			typedef map_iterator<T, Node<value_type> >			iterator;
-			typedef map_iterator<const T, Node<value_type> >	const_iterator;
+			typedef map_iterator<value_type, Node<value_type> >			iterator;
+			typedef map_iterator<const value_type, Node<value_type> >	const_iterator;
 			typedef ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 			class value_compare: public std::binary_function<value_type, value_type, bool> {
@@ -44,19 +44,20 @@ namespace ft {
 			typedef typename Allocator::template rebind<Node<value_type> >::other	Node_alloc;
 			value_compare	_comp;
 			Allocator		_alloc;
-			Rbt<value_type, value_compare, Node_alloc >	_data;
+			Rbt<value_type, value_compare, Node_alloc>	_data;
 		public:
 			map(): _comp(Compare()), _alloc(Allocator()), _data(_comp) {}
 			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): \
-					_comp(comp), _alloc(alloc), _data(comp) {}
-/*			template< class InputIt >
+					_comp(comp), _alloc(alloc), _data(_comp) {}
+			template< class InputIt >
 			map(InputIt first, InputIt last, const Compare& comp = Compare(), \
 				const Allocator& alloc = Allocator());
-			map(const map& other);do it later!*/
+			map(const map& other): _comp(other._comp), _alloc(other._alloc), \
+					_data(other._data) {}
 			~map() {}
-//			map&			operator=(const map& other); do it later!
-//			T&				operator[](const Key& key); do it later!
-
+			map&			operator=(const map& other);
+			T&				operator[](const Key& key) {return \
+					(*(insert(ft::make_pair(key, T())).first)).second;}
 			allocator_type	get_allocator() const {return _alloc;}
 			T&				at(const Key& key);
 			const T&		at( const Key& key ) const;
@@ -71,13 +72,32 @@ namespace ft {
 			const_reverse_iterator rbegin() const {return const_reverse_iterator(end());}
 			reverse_iterator rend() {return reverse_iterator(begin());}
 			const_reverse_iterator rend() const {return const_reverse_iterator(begin());}
-
-
+			bool			empty() const {return _data.get_size();}
+			size_type		size() const {return _data.get_size();}
+			size_type		max_size() const {return _data.max_size();}
+			void			clear() {_data.clear();}
 			ft::pair<iterator, bool> insert(const value_type& value) {return _data.insert(value);}
 			iterator		insert(iterator pos, const value_type& value);
 			template< class InputIt >
 			void			insert(InputIt first, InputIt last);
 	};
+
+	template<class Key, class T, class Compare, class Allocator>
+	map<Key, T, Compare, Allocator>& MAP::operator=(const map& other) {
+		if (this != &other) {
+			_comp = other._comp;
+			_alloc = other._alloc;
+			_data = other._data;
+		}
+		return *this;
+	}
+
+	template<class Key, class T, class Compare, class Allocator>
+	template< class InputIt >
+	MAP::map(InputIt first, InputIt last, const Compare& comp, const Allocator& alloc): \
+			_comp(comp), _alloc(alloc), _data(_comp) {
+		insert(first, last);
+	}
 
 	template<class Key, class T, class Compare, class Allocator>
 	template< class InputIt >
@@ -94,7 +114,7 @@ namespace ft {
 
 	template<class Key, class T, class Compare, class Allocator>
 	T& MAP::at(const Key& key) {
-		Node<value_type>* x = _data.tree_search(key);
+		Node<value_type>* x = _data.tree_search(ft::make_pair(key, T()));
 		if (x == _data.get_nil())
 			throw std::out_of_range("key not found!");
 		return x->_value.second;
@@ -102,7 +122,7 @@ namespace ft {
 
 	template<class Key, class T, class Compare, class Allocator>
 	const T& MAP::at(const Key& key) const {
-		Node<value_type>* x = _data.tree_search(key);
+		Node<value_type>* x = _data.tree_search(ft::make_pair(key, T()));
 		if (x == _data.get_nil())
 			throw std::out_of_range("key not found!");
 		return x->_value.second;
