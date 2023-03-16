@@ -98,7 +98,9 @@ namespace ft {
 	template< class InputIt >
 	typename _VEC::iterator _VEC::insert(const_iterator pos, InputIt first, InputIt last, \
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type*) {
-		size_type count = last - first;
+		size_type count = 0;
+		for (InputIt it = first; it != last; ++it)
+			++count;
 		if (count == 0)
 			return _VEC::iterator(const_cast<T*>(pos.base()));
 		else if (_capacity < _size + count)

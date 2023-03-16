@@ -15,8 +15,8 @@ namespace ft {
 			map_iterator& operator=(const map_iterator& other);
 			operator map_iterator<const T, N>() {return map_iterator<const T, N>(this->_ptr, this->_nil);}
 			typename map_iterator::pointer		base() const {return &_ptr->_value;}
-			typename map_iterator::pointer		operator->() {return &_ptr->_value;}
-			typename map_iterator::reference	operator*() {return _ptr->_value;}
+			typename map_iterator::pointer		operator->() const {return &_ptr->_value;}
+			typename map_iterator::reference	operator*() const {return _ptr->_value;}
 			map_iterator&		operator++();
 			map_iterator		operator++(int);
 			map_iterator&		operator--();

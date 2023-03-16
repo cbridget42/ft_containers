@@ -124,7 +124,9 @@ namespace ft {
 	_VEC::vector(InputIt first, InputIt last, const Allocator& alloc, \
 				typename ft::enable_if<!ft::is_integral<InputIt>::value>::type*): \
 				_ptr(0), _size(0), _capacity(0), _allocator(alloc) {
-		size_type count = last - first;
+		size_type count = 0;
+		for (InputIt it = first; it != last; ++it)
+			++count;
 		if (!count)
 			return;
 		_ptr = _allocator.allocate(count);
@@ -183,8 +185,9 @@ namespace ft {
 	template<class InputIt>
 	void _VEC::assign(InputIt first, InputIt last, \
 		typename ft::enable_if<!ft::is_integral<InputIt>::value>::type*) {
-
-		size_type count = last - first;
+		size_type count = 0;
+		for (InputIt it = first; it != last; ++it)
+			++count;
 		for (size_type i = 0; i < _size; ++i)
 				_allocator.destroy(_ptr + i);
 		if (_capacity < count) {

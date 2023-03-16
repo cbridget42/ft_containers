@@ -4,13 +4,13 @@
 #include <functional>
 #include <memory>
 #include <stdexcept>
-#include "utility.hpp"
-#include "red_black_tree.hpp"
-#include "map_iterator.hpp"
-#include "reverse_iterator.hpp"
-#include "algorithm.hpp"
+#include "../other/utility.hpp"
+#include "../other/red_black_tree.hpp"
+#include "../iterators/map_iterator.hpp"
+#include "../iterators/reverse_iterator.hpp"
+#include "../other/algorithm.hpp"
 
-#define MAP map<Key, T, Compare, Allocator>
+#define _MAP map<Key, T, Compare, Allocator>
 
 namespace ft {
 	template<class Key, class T, class Compare = std::less<Key>, \
@@ -111,7 +111,7 @@ namespace ft {
 	};
 
 	template<class Key, class T, class Compare, class Allocator>
-	typename MAP::size_type MAP::erase(const Key& key) {
+	typename _MAP::size_type _MAP::erase(const Key& key) {
 		Node<value_type>* n = search(key);
 		if (n == _data.get_nil())
 			return 0;
@@ -120,7 +120,7 @@ namespace ft {
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	typename MAP::iterator MAP::erase(iterator first, iterator last) {
+	typename _MAP::iterator _MAP::erase(iterator first, iterator last) {
 		Node<value_type>* n = search(first->first);
 		for (; first != last; ++first) {
 			_data.rb_delete(n);
@@ -130,7 +130,7 @@ namespace ft {
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	typename MAP::iterator MAP::erase(iterator pos) {
+	typename _MAP::iterator _MAP::erase(iterator pos) {
 		Node<value_type>* n = search(pos->first);
 		++pos;
 		_data.rb_delete(n);
@@ -138,7 +138,7 @@ namespace ft {
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	map<Key, T, Compare, Allocator>& MAP::operator=(const map& other) {
+	map<Key, T, Compare, Allocator>& _MAP::operator=(const map& other) {
 		if (this != &other) {
 			_comp = other._comp;
 			_alloc = other._alloc;
@@ -149,26 +149,26 @@ namespace ft {
 
 	template<class Key, class T, class Compare, class Allocator>
 	template< class InputIt >
-	MAP::map(InputIt first, InputIt last, const Compare& comp, const Allocator& alloc): \
+	_MAP::map(InputIt first, InputIt last, const Compare& comp, const Allocator& alloc): \
 			_comp(comp), _alloc(alloc), _data(_comp) {
 		insert(first, last);
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
 	template< class InputIt >
-	void MAP::insert(InputIt first, InputIt last) {
+	void _MAP::insert(InputIt first, InputIt last) {
 		for (;first != last; ++first)
 			_data.insert(*first);
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	typename MAP::iterator MAP::insert(iterator pos, const value_type& value) {
+	typename _MAP::iterator _MAP::insert(iterator pos, const value_type& value) {
 		(void)pos;
 		return _data.insert(value).first;
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	T& MAP::at(const Key& key) {
+	T& _MAP::at(const Key& key) {
 		Node<value_type>* x = search(key);
 		if (x == _data.get_nil())
 			throw std::out_of_range("key not found!");
@@ -176,7 +176,7 @@ namespace ft {
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	const T& MAP::at(const Key& key) const {
+	const T& _MAP::at(const Key& key) const {
 		Node<value_type>* x = search(key);
 		if (x == _data.get_nil())
 			throw std::out_of_range("key not found!");
@@ -184,7 +184,7 @@ namespace ft {
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	Node<typename MAP::value_type>* MAP::search(const Key& key) const { 
+	Node<typename _MAP::value_type>* _MAP::search(const Key& key) const { 
 		Node<value_type>* x = _data.get_root();
 		Compare c;
 		while (x != _data.get_nil() && !(!c(key, x->_value.first) && !c(x->_value.first, key))) {
@@ -197,7 +197,7 @@ namespace ft {
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	Node<typename MAP::value_type>* MAP::_lower_bound(const Key& key) const {
+	Node<typename _MAP::value_type>* _MAP::_lower_bound(const Key& key) const {
 		Compare c;
 		Node<value_type>* x;
 		Node<value_type>* res = _data.tree_minimum(_data.get_root());
@@ -220,7 +220,7 @@ namespace ft {
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
-	Node<typename MAP::value_type>* MAP::_upper_bound(const Key& key) const {
+	Node<typename _MAP::value_type>* _MAP::_upper_bound(const Key& key) const {
 		Compare c;
 		Node<value_type>* x;
 		Node<value_type>* res = _data.tree_minimum(_data.get_root());
