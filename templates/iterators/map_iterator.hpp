@@ -104,6 +104,7 @@ namespace ft {
 			_ptr = _ptr->_right;
 		return *this;
 	}
+
 }
 
 #endif

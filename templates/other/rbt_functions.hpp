@@ -4,6 +4,27 @@
 namespace ft {
 
 	template <class T, class Compare, class Allocator>
+	void _RBT::swap(Rbt& other) {
+		Node<T>*	tmp_root = other._root;
+		Node<T>*	tmp_nil = other._nil;
+		Compare		tmp_comp = other._comp;
+		Allocator	tmp_alloc = other._alloc;
+		size_type	tmp_size = other._size;
+
+		other._root = _root;
+		other._nil = _nil;
+		other._comp = _comp;
+		other._alloc = _alloc;
+		other._size = _size;
+
+		_root = tmp_root;
+		_nil = tmp_nil;
+		_comp = tmp_comp;
+		_alloc = tmp_alloc;
+		_size = tmp_size;
+	}
+
+	template <class T, class Compare, class Allocator>
 	void _RBT::clear() {
 		if (_root != _nil) {
 			delete_tree(_root);
@@ -61,7 +82,7 @@ namespace ft {
 	}
 
 	template <class T, class Compare, class Allocator>
-	Node<T>* _RBT::tree_successor(Node<T>* x) {//next element
+	Node<T>* _RBT::tree_successor(Node<T>* x) const {//next element
 		if (x->_right != _nil)
 			return tree_minimum(x->_right);
 		Node<T>* y = x->_parent;
@@ -73,7 +94,7 @@ namespace ft {
 	}
 
 	template <class T, class Compare, class Allocator>
-	Node<T>* _RBT::tree_predecessor(Node<T>* x) {//previous element
+	Node<T>* _RBT::tree_predecessor(Node<T>* x) const {//previous element
 		if (x->_left != _nil)
 			return tree_maximum(x->_left);
 		Node<T>* y = x->_parent;

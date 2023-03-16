@@ -6,14 +6,14 @@ namespace ft {
 	template<class T, class Allocator>
 	typename _VEC::reference _VEC::at(size_type pos) {
 		if (pos >= _size)
-			throw ::std::out_of_range("pos is out of range!");
+			throw std::out_of_range("pos is out of range!");
 		return _ptr[pos];
 	}
 
 	template<class T, class Allocator>
 	typename _VEC::const_reference _VEC::at(size_type pos) const {
 		if (pos >= _size)
-			throw ::std::out_of_range("pos is out of range!");
+			throw std::out_of_range("pos is out of range!");
 		return _ptr[pos];
 	}
 
@@ -22,7 +22,7 @@ namespace ft {
 		if (new_cap <= _capacity)
 			return;
 		else if (new_cap > this->max_size())
-			throw ::std::length_error("new_cap is greater than max_size!");
+			throw std::length_error("new_cap is greater than max_size!");
 		this->copy_array(*this, new_cap);
 	}
 
@@ -36,7 +36,7 @@ namespace ft {
 	template<class T, class Allocator>
 	void _VEC::push_back( const T& value ) {
 		if (_size + 1 > this->max_size())
-			throw ::std::length_error("size exceeds max_size!");
+			throw std::length_error("size exceeds max_size!");
 		else if (_size + 1 <= _capacity)
 			_allocator.construct(_ptr + _size++, value);
 		else {
@@ -48,27 +48,10 @@ namespace ft {
 		}
 	}
 
-/*	template<class T, class Allocator>
-	void _VEC::resize(size_type count) {
-		if (count > this->max_size())
-			throw ::std::length_error("count exceeds max_size!");
-		else if (count <= _size) {
-			for (size_type i = count; i < _size; ++i)
-				_allocator.destroy(_ptr + i);
-			_size = count;
-		} else {
-			if (count > _capacity)
-				this->copy_array(*this, count);
-			for (size_type i = _size; i < count; ++i)
-				_allocator.construct(_ptr + i, value_type());
-			_size = count;
-		}
-	}*/
-
 	template<class T, class Allocator>
 	void _VEC::resize(size_type count, T value) {
 		if (count > this->max_size())
-			throw ::std::length_error("count exceeds max_size!");
+			throw std::length_error("count exceeds max_size!");
 		else if (count <= _size) {
 			for (size_type i = count; i < _size; ++i)
 				_allocator.destroy(_ptr + i);

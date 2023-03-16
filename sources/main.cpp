@@ -9,18 +9,18 @@ int main() {
 
 	test.insert(ft::make_pair(1, "hello"));
 	test.insert(ft::make_pair(2, "world"));
-	test.insert(ft::make_pair(-5, "bla_bla"));
+	test.insert(ft::make_pair(5, "bla_bla"));
+	test.insert(ft::make_pair(7, "ha_ha"));
 
 	ft::map<int, std::string> test2(test);
-//	test2 = test;
-	ft::map<int, std::string>::iterator it = test2.begin();
 
-	for (; it != test2.end(); ++it)
-		std::cout << (*it).second << '\n';
+//	test2[2] = "lsadifjasdfj";
+//	test2.insert(ft::make_pair(10, "ha_ha_ha"));
 
-//	int x = 2;
-	std::map<int, std::string> test3;
-	std::cout << test3.max_size() << '\n' << test2.max_size() << '\n';
+	if (test < test2)
+		std::cout << "good!\n";
+
+//	std::cout << test2.find(5)->second << '\n';
 
 	return 0;
 }

@@ -27,6 +27,7 @@ namespace ft {
 			Rbt& operator=(const Rbt& other);
 
 			void		clear();
+			void		swap(Rbt& other);
 			size_type	get_size() const;
 			size_type	max_size() const;
 			Node<T>*	get_nil() const;
@@ -35,8 +36,8 @@ namespace ft {
 			Node<T>*	tree_search(const T& key) const;
 			Node<T>*	tree_minimum(Node<T>* x) const;
 			Node<T>*	tree_maximum(Node<T>* x) const;
-			Node<T>*	tree_successor(Node<T>* x);
-			Node<T>*	tree_predecessor(Node<T>* x);
+			Node<T>*	tree_successor(Node<T>* x) const;
+			Node<T>*	tree_predecessor(Node<T>* x) const;
 			ft::pair<iterator, bool> insert(const T& val);
 
 		private:
