@@ -9,7 +9,7 @@ namespace ft {
 			Iter _iter;
 		public:
 			typedef Iter iterator_type;
-			reverse_iterator(): _iter(0) {}
+			reverse_iterator() {}
 			explicit reverse_iterator(iterator_type x): _iter(x) {}
 			template<class U>
 			reverse_iterator(const reverse_iterator<U>& other): _iter(other.base()) {}
@@ -23,8 +23,8 @@ namespace ft {
 			~reverse_iterator() {}
 
 			iterator_type				base() const {return _iter;}
-			typename Iter::pointer		operator->() {return &(operator*());}
-			typename Iter::reference	operator*();
+			typename Iter::pointer		operator->() const {return &(operator*());}
+			typename Iter::reference	operator*() const;
 			typename Iter::reference	operator[](const typename Iter::difference_type n) \
 			{return *(*this + n);}
 			reverse_iterator&	operator++();
@@ -40,7 +40,7 @@ namespace ft {
 	};
 
 	template <class Iter>
-	typename Iter::reference reverse_iterator<Iter>::operator*() {
+	typename Iter::reference reverse_iterator<Iter>::operator*() const {
 		Iter tmp(_iter);
 		return *(--tmp);
 	}

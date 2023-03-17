@@ -73,7 +73,7 @@ namespace ft {
 			const_reverse_iterator rbegin() const {return const_reverse_iterator(end());}
 			reverse_iterator rend() {return reverse_iterator(begin());}
 			const_reverse_iterator rend() const {return const_reverse_iterator(begin());}
-			bool			empty() const {return _data.get_size();}
+			bool			empty() const {return !_data.get_size();}
 			size_type		size() const {return _data.get_size();}
 			size_type		max_size() const {return _data.max_size();}
 			void			clear() {_data.clear();}
@@ -104,6 +104,8 @@ namespace ft {
 			key_compare		key_comp() const {return key_compare();}
 			value_compare	value_comp() const {return _comp;}
 
+			void			debug_tree() {_data.print_tree();}
+
 			private:
 				Node<value_type>*	search(const Key& key) const;
 				Node<value_type>*	_lower_bound(const Key& key) const;
@@ -122,9 +124,11 @@ namespace ft {
 	template<class Key, class T, class Compare, class Allocator>
 	typename _MAP::iterator _MAP::erase(iterator first, iterator last) {
 		Node<value_type>* n = search(first->first);
+		Node<value_type>* tmp;
 		for (; first != last; ++first) {
+			tmp = _data.tree_successor(n);
 			_data.rb_delete(n);
-			n = _data.tree_successor(n);
+			n = tmp;
 		}
 		return first;
 	}

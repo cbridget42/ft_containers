@@ -4,6 +4,13 @@
 namespace ft {
 
 	template <class T, class Compare, class Allocator>
+	void _RBT::print_tree() {
+		Node<T>* x = tree_minimum(_root);
+		for (; x != _nil; x = tree_successor(x))
+			std::cout << x->_value.first << '\n';
+	}
+
+	template <class T, class Compare, class Allocator>
 	void _RBT::swap(Rbt& other) {
 		Node<T>*	tmp_root = other._root;
 		Node<T>*	tmp_nil = other._nil;
@@ -184,7 +191,7 @@ namespace ft {
 		z->_left = z->_right = _nil;
 		++_size;
 		insert_fixup(z);
-		return ft::make_pair(iterator(z, _nil), false);
+		return ft::make_pair(iterator(z, _nil), true);
 	}
 
 	template <class T, class Compare, class Allocator>
@@ -225,6 +232,7 @@ namespace ft {
 				}
 			}
 		}
+		_root->_is_red = 0;
 	}
 
 	template <class T, class Compare, class Allocator>

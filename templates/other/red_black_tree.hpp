@@ -1,6 +1,8 @@
 #ifndef RED_BLACK_TREE_HPP
 #define RED_BLACK_TREE_HPP
 
+#include <iostream>
+
 #include "node.hpp"
 #include "utility.hpp"
 #include "../iterators/map_iterator.hpp"
@@ -38,6 +40,7 @@ namespace ft {
 			Node<T>*	tree_maximum(Node<T>* x) const;
 			Node<T>*	tree_successor(Node<T>* x) const;
 			Node<T>*	tree_predecessor(Node<T>* x) const;
+			void		print_tree();
 			ft::pair<iterator, bool> insert(const T& val);
 
 		private:

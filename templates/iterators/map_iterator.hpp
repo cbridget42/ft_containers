@@ -79,15 +79,15 @@ namespace ft {
 		return tmp;
 	}
 
-	template<class T, class N>
-	bool operator==( const ft::map_iterator<T, N>& lhs,
-				const ft::map_iterator<T, N>& rhs ) {
+	template<class T, class N, class J, class F>
+	bool operator==(const ft::map_iterator<T, N>& lhs,
+				const ft::map_iterator<J, F>& rhs) {
 		return lhs.base() == rhs.base();
 	}
 
-	template<class T, class N>
-	bool operator!=( const ft::map_iterator<T, N>& lhs,
-				const ft::map_iterator<T, N>& rhs ) {
+	template<class T, class N, class J, class F>
+	bool operator!=(const ft::map_iterator<T, N>& lhs,
+				const ft::map_iterator<J, F>& rhs) {
 		return lhs.base() != rhs.base();
 	}
 
