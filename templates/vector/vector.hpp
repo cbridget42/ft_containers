@@ -2,6 +2,7 @@
 #define VECTOR_HPP
 
 #include <memory>
+#include <stdexcept>
 #include "../other/algorithm.hpp"
 #include "../iterators/vector_iterator.hpp"
 #include "../iterators/reverse_iterator.hpp"
@@ -87,16 +88,17 @@ namespace ft {
 
 			private:
 				void		copy_array(const vector& other, size_type new_capacity);
+				void		fix_vec(T* tmp, size_type count);
+				
+				
 				template<class U>
-				iterator	copy_insert(const_iterator& pos, size_type count, const U value);
+				void		insert_range_iter(T* ptr, size_type &i, size_type count, U& value);
 				template<class U>
-				void		insert_range(T* ptr, size_type &i, size_type count, const U& value, \
-						typename ft::enable_if<ft::is_integral<U>::value>::type* = 0);
-				template<class U>
-				void		insert_range(T* ptr, size_type &i, size_type count, U value, \
-						typename ft::enable_if<!ft::is_integral<U>::value>::type* = 0);
-				template<class U>
-				iterator	insert_method(const_iterator& pos, size_type count, const U value);
+				void		insert_range_val(T* ptr, size_type &i, size_type count, const U& value);
+				
+				
+				iterator	insert_method(const_iterator& pos, size_type count);
+				void		insert_failed(const_iterator& pos, size_type count, size_type &i);
 	};
 
 	template<class T, class Allocator>
@@ -213,8 +215,8 @@ namespace ft {
 	template< class T, class Alloc >
 	bool operator==(const ft::vector<T, Alloc>& lhs, \
 				const ft::vector<T, Alloc>& rhs) {
-		if (lhs.size() > rhs.size())
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+		if (lhs.size() != rhs.size())
+			return false;
 		else
 			return ft::equal(rhs.begin(), rhs.end(), lhs.begin());
 	}
@@ -247,6 +249,12 @@ namespace ft {
 	bool operator>=(const ft::vector<T, Alloc>& lhs, \
 				const ft::vector<T, Alloc>& rhs) {
 		return !(lhs < rhs);
+	}
+
+	template< class T, class Alloc >
+	void swap(ft::vector<T, Alloc>& lhs,
+			ft::vector<T, Alloc>& rhs) {
+		lhs.swap(rhs);
 	}
 }
 

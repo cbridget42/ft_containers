@@ -80,18 +80,51 @@ namespace ft {
 
 	template<class T, class Allocator>
 	typename _VEC::iterator _VEC::insert(const_iterator pos, const T& value) {
-		if (_capacity < _size + 1)
-			return this->copy_insert(pos, 1, value);
-		return this->insert_method(pos, 1, value);
+		long dst = 0;
+		typename _VEC::iterator tmp = begin();
+		for (; tmp != pos; ++tmp, ++dst)
+			;
+		insert(pos, 1, value);
+		return iterator(begin() + dst);
 	}
 
 	template<class T, class Allocator>
 	typename _VEC::iterator _VEC::insert(const_iterator pos, size_type count, const T& value) {
 		if (count == 0)
 			return _VEC::iterator(const_cast<T*>(pos.base()));
-		else if (_capacity < _size + count)
-			return this->copy_insert(pos, count, value);
-		return this->insert_method(pos, count, value);
+		else if (_capacity < _size + count) {
+			T* tmp = _allocator.allocate((_capacity + count) * 2);
+			size_type j, i;
+			i = j = 0;
+			typename _VEC::iterator it;
+			try {
+				for (; i < _size + count; ++i) {
+					if (_ptr + i == pos.base()) {
+						it = typename _VEC::iterator(tmp + i);
+						this->insert_range_val(tmp, i, count, value);
+					} else
+						_allocator.construct(tmp + i, _ptr[j++]);
+				}
+			} catch (...) {
+				for (j = 0; j < i; ++j)
+					_allocator.destroy(tmp + j);
+				_allocator.deallocate(tmp, (_capacity + count) * 2);
+				throw;
+			}
+			fix_vec(tmp, count);
+			return it;
+		}
+		size_type i = pos.base() - _ptr;
+		_VEC::iterator it = this->insert_method(pos, count);
+		try {
+			this->insert_range_val(_ptr, i, count, value);
+			++it;
+		} catch (...) {
+			this->insert_failed(pos, count, i);
+			throw;
+		}
+		_size += count;
+		return it;
 	}
 
 	template<class T, class Allocator>
@@ -103,9 +136,39 @@ namespace ft {
 			++count;
 		if (count == 0)
 			return _VEC::iterator(const_cast<T*>(pos.base()));
-		else if (_capacity < _size + count)
-			return this->copy_insert(pos, count, first);
-		return this->insert_method(pos, count, first);
+		else if (_capacity < _size + count) {
+			T* tmp = _allocator.allocate((_capacity + count) * 2);
+			size_type j, i;
+			i = j = 0;
+			typename _VEC::iterator it;
+			try {
+				for (; i < _size + count; ++i) {
+					if (_ptr + i == pos.base()) {
+						it = typename _VEC::iterator(tmp + i);
+						this->insert_range_iter(tmp, i, count, first);
+					} else
+						_allocator.construct(tmp + i, _ptr[j++]);
+				}
+			} catch (...) {
+				for (j = 0; j < i; ++j)
+					_allocator.destroy(tmp + j);
+				_allocator.deallocate(tmp, (_capacity + count) * 2);
+				throw;
+			}
+			fix_vec(tmp, count);
+			return it;
+		}
+		size_type i = pos.base() - _ptr;
+		_VEC::iterator it = insert_method(pos, count);
+		try {
+			this->insert_range_iter(_ptr, i, count, first);
+			++it;
+		} catch (...) {
+			insert_failed(pos, count, i);
+			throw;
+		}
+		_size += count;
+		return it;
 	}
 
 	template<class T, class Allocator>
@@ -165,26 +228,7 @@ namespace ft {
 	}
 
 	template<class T, class Allocator>
-	template<class U>
-	typename _VEC::iterator _VEC::copy_insert(const_iterator& pos, size_type count, const U value) {
-		T* tmp = _allocator.allocate((_capacity + count) * 2);
-		size_type j, i;
-		i = j = 0;
-		typename _VEC::iterator it;
-		try {
-			for (; i < _size + count; ++i) {
-				if (_ptr + i == pos.base()) {
-					it = typename _VEC::iterator(tmp + i);
-					this->insert_range(tmp, i, count, value);
-				} else
-					_allocator.construct(tmp + i, _ptr[j++]);
-			}
-		} catch (...) {
-			for (j = 0; j < i; ++j)
-				_allocator.destroy(tmp + j);
-			_allocator.deallocate(tmp, (_capacity + count) * 2);
-			throw;
-		}
+	void _VEC::fix_vec(T* tmp, size_type count) {
 		for (size_type i = 0; i < _size; ++i)
 			_allocator.destroy(_ptr + i);
 		if (_capacity)
@@ -192,13 +236,11 @@ namespace ft {
 		_ptr = tmp;
 		_capacity = (_capacity + count) * 2;
 		_size += count;
-		return it;
 	}
 
 	template<class T, class Allocator>
 	template<class U>
-	void _VEC::insert_range(T* ptr, size_type &i, size_type count, const U& value, \
-			typename ft::enable_if<ft::is_integral<U>::value>::type*) {
+	void _VEC::insert_range_val(T* ptr, size_type &i, size_type count, const U& value) {
 		size_type j = 0;
 		for (; j < count; ++j) {
 			_allocator.construct(ptr + i, value);
@@ -209,8 +251,7 @@ namespace ft {
 
 	template<class T, class Allocator>
 	template<class U>
-	void _VEC::insert_range(T* ptr, size_type &i, size_type count, U value, \
-			typename ft::enable_if<!ft::is_integral<U>::value>::type*) {
+	void _VEC::insert_range_iter(T* ptr, size_type &i, size_type count, U& value) {
 		size_type j = 0;
 		for (; j < count; ++j, ++value) {
 			_allocator.construct(ptr + i, *value);
@@ -220,8 +261,7 @@ namespace ft {
 	}
 
 	template<class T, class Allocator>
-	template<class U>
-	typename _VEC::iterator _VEC::insert_method(const_iterator& pos, size_type count, const U value) {
+	typename _VEC::iterator _VEC::insert_method(const_iterator& pos, size_type count) {
 		typename vector<T>::iterator it = this->end() - 1;
 		try {
 			for (; it >= pos; --it) {
@@ -245,26 +285,22 @@ namespace ft {
 			_size = 0;
 			throw;
 		}
-		size_type i = pos.base() - _ptr;
-		try {
-			this->insert_range(_ptr, i, count, value);
-			++it;
-		} catch (...) {
-			size_type m_pos = pos.base() - _ptr;
-			for (size_type j = 0; j < _size + count; ++j) {
-				if (j < m_pos)
-					_allocator.destroy(_ptr + j);
-				else if (j >= m_pos && j < m_pos + count) {
-					if (j < i)
-						_allocator.destroy(_ptr + j);
-				} else
-					_allocator.destroy(_ptr + j);
-			}
-			_size = 0;
-			throw;
-		}
-		_size += count;
 		return it;
+	}
+
+	template<class T, class Allocator>
+	void _VEC::insert_failed(const_iterator& pos, size_type count, size_type &i) {
+		size_type m_pos = pos.base() - _ptr;
+		for (size_type j = 0; j < _size + count; ++j) {
+			if (j < m_pos)
+				_allocator.destroy(_ptr + j);
+			else if (j >= m_pos && j < m_pos + count) {
+				if (j < i)
+					_allocator.destroy(_ptr + j);
+			} else
+				_allocator.destroy(_ptr + j);
+		}
+		_size = 0;
 	}
 }
 

@@ -18,8 +18,8 @@ namespace ft {
 			~vector_iterator() {}
 
 			T*					base() const {return _ptr;}
-			T*					operator->() {return _ptr;}
-			T&					operator*() {return *_ptr;}
+			T*					operator->() const {return _ptr;}
+			T&					operator*() const {return *_ptr;}
 			T&					operator[](const typename DIF_TYPE n) {return *(_ptr + n);}
 			vector_iterator&	operator++();
 			vector_iterator		operator++(int);
