@@ -207,24 +207,29 @@ namespace ft {
 
 	template<class T, class Allocator>
 	void _VEC::copy_array(const vector& other, size_type new_capacity) {
-		T* tmp = _allocator.allocate(new_capacity);
-		for (size_type i = 0; i < other._size; ++i) {
-			try {
-				_allocator.construct(tmp + i, other._ptr[i]);
-			} catch (...) {
-				for (size_type j = 0; j < i; ++j)
-					_allocator.destroy(tmp + j);
-				_allocator.deallocate(tmp, other._capacity);
-				throw;
+		if (new_capacity) {
+			T* tmp = _allocator.allocate(new_capacity);
+			for (size_type i = 0; i < other._size; ++i) {
+				try {
+					_allocator.construct(tmp + i, other._ptr[i]);
+				} catch (...) {
+					for (size_type j = 0; j < i; ++j)
+						_allocator.destroy(tmp + j);
+					_allocator.deallocate(tmp, other._capacity);
+					throw;
+				}
 			}
+			for (size_type i = 0; i < _size; ++i)
+				_allocator.destroy(_ptr + i);
+			if (_capacity)
+				_allocator.deallocate(_ptr, _capacity);
+			_ptr = tmp;
+			_capacity = new_capacity;
+			_size = other._size;
+		} else {
+			_capacity = _size = 0;
+			_ptr = 0;
 		}
-		for (size_type i = 0; i < _size; ++i)
-			_allocator.destroy(_ptr + i);
-		if (_capacity)
-			_allocator.deallocate(_ptr, _capacity);
-		_ptr = tmp;
-		_capacity = new_capacity;
-		_size = other._size;
 	}
 
 	template<class T, class Allocator>
