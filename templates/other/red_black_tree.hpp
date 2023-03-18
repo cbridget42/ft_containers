@@ -67,11 +67,13 @@ namespace ft {
 			_nil->_parent = 0;
 			_nil->_right = _nil->_left = _root;
 			_size = 0;
-			iterator it(other._nil, other._nil);
-			iterator e_it(other._nil, other._nil);
-			++it;
-			for (; it != e_it; ++it)
-				insert(*it);
+			if (other._size) {
+				iterator it(other._nil, other._nil);
+				iterator e_it(other._nil, other._nil);
+				++it;
+				for (; it != e_it; ++it)
+					insert(*it);
+			}
 		}
 		return *this;
 	}

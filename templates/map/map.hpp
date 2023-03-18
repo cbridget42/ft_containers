@@ -125,8 +125,9 @@ namespace ft {
 	typename _MAP::iterator _MAP::erase(iterator first, iterator last) {
 		Node<value_type>* n = search(first->first);
 		Node<value_type>* tmp;
-		for (; first != last; ++first) {
+		for (; first != last;) {
 			tmp = _data.tree_successor(n);
+			++first;
 			_data.rb_delete(n);
 			n = tmp;
 		}
@@ -203,47 +204,35 @@ namespace ft {
 	template<class Key, class T, class Compare, class Allocator>
 	Node<typename _MAP::value_type>* _MAP::_lower_bound(const Key& key) const {
 		Compare c;
-		Node<value_type>* x;
-		Node<value_type>* res = _data.tree_minimum(_data.get_root());
-		difference_type count, step;
-		count = _data.get_size();
+		Node<value_type>* tmp = _data.get_root();
+		Node<value_type>* save = _data.get_nil();
 
-		while (count > 0) {
-			x = res;
-			step = count / 2;
-			for (long i = 0; i < step; ++i)
-				x = _data.tree_successor(x);
-			if (c(x->_value.first, key)) {
-				x = _data.tree_successor(x);
-				res = x;
-				count -= step + 1;
-			} else
-				count = step;
+		while (tmp != _data.get_nil()) {
+			if (!c(tmp->_value.first, key)) {
+				save = tmp;
+				tmp = tmp->_left;
+			} else {
+				tmp = tmp->_right;
+			}
 		}
-		return res;
+		return save;
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
 	Node<typename _MAP::value_type>* _MAP::_upper_bound(const Key& key) const {
 		Compare c;
-		Node<value_type>* x;
-		Node<value_type>* res = _data.tree_minimum(_data.get_root());
-		difference_type count, step;
-		count = _data.get_size();
+		Node<value_type>* tmp = _data.get_root();
+		Node<value_type>* save = _data.get_nil();
 
-		while (count > 0) {
-			x = res;
-			step = count / 2;
-			for (long i = 0; i < step; ++i)
-				x = _data.tree_successor(x);
-			if (!c(key, x->_value.first)) {
-				x = _data.tree_successor(x);
-				res = x;
-				count -= step + 1;
-			} else
-				count = step;
+		while (tmp != _data.get_nil()) {
+			if (c(key, tmp->_value.first)) {
+				save = tmp;
+				tmp = tmp->_left;
+			} else {
+				tmp = tmp->_right;
+			}
 		}
-		return res;
+		return save;
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
