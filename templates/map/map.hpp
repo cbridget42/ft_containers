@@ -77,7 +77,7 @@ namespace ft {
 			size_type		size() const {return _data.get_size();}
 			size_type		max_size() const {return _data.max_size();}
 			void			clear() {_data.clear();}
-			ft::pair<iterator, bool> insert(const value_type& value) {return _data.insert(value);}
+			ft::pair<iterator, bool> insert(const value_type& value);
 			iterator		insert(iterator pos, const value_type& value);
 			template<class InputIt>
 			void			insert(InputIt first, InputIt last);
@@ -103,8 +103,6 @@ namespace ft {
 			{return ft::make_pair(lower_bound(key), upper_bound(key));}
 			key_compare		key_comp() const {return key_compare();}
 			value_compare	value_comp() const {return _comp;}
-
-			void			debug_tree() {_data.print_tree();}
 
 			private:
 				Node<value_type>*	search(const Key& key) const;
@@ -160,6 +158,12 @@ namespace ft {
 	}
 
 	template<class Key, class T, class Compare, class Allocator>
+	ft::pair<typename _MAP::iterator, bool> _MAP::insert(const value_type& value) {
+		ft::pair<Node<typename _MAP::value_type>*, bool> tmp = _data.insert(value);
+		return ft::make_pair(iterator(tmp.first, _data.get_nil()), tmp.second);
+	}
+
+	template<class Key, class T, class Compare, class Allocator>
 	template< class InputIt >
 	void _MAP::insert(InputIt first, InputIt last) {
 		for (;first != last; ++first)
@@ -169,7 +173,7 @@ namespace ft {
 	template<class Key, class T, class Compare, class Allocator>
 	typename _MAP::iterator _MAP::insert(iterator pos, const value_type& value) {
 		(void)pos;
-		return _data.insert(value).first;
+		return iterator(_data.insert(value).first, _data.get_nil());
 	}
 
 	template<class Key, class T, class Compare, class Allocator>

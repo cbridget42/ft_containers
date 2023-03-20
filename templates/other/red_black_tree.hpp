@@ -15,7 +15,6 @@ namespace ft {
 	class Rbt {
 		public:
 			typedef unsigned long				size_type;
-			typedef map_iterator<T, Node<T> >	iterator;
 		private:
 			Node<T>*	_root;
 			Node<T>*	_nil;
@@ -41,7 +40,7 @@ namespace ft {
 			Node<T>*	tree_successor(Node<T>* x) const;
 			Node<T>*	tree_predecessor(Node<T>* x) const;
 			void		print_tree();
-			ft::pair<iterator, bool> insert(const T& val);
+			ft::pair<Node<T>*, bool> insert(const T& val);
 
 		private:
 			void		delete_tree(Node<T>* x);
@@ -68,11 +67,11 @@ namespace ft {
 			_nil->_right = _nil->_left = _root;
 			_size = 0;
 			if (other._size) {
-				iterator it(other._nil, other._nil);
-				iterator e_it(other._nil, other._nil);
-				++it;
-				for (; it != e_it; ++it)
-					insert(*it);
+				Node<T>* x = other.tree_minimum(other._root);
+				for (; x != other._nil;) {
+					insert(x->_value);
+					x = other.tree_successor(x);
+				}
 			}
 		}
 		return *this;
