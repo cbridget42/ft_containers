@@ -1,5 +1,4 @@
-#ifndef VECTOR_METHODS_HPP
-#define VECTOR_METHODS_HPP
+#pragma once
 
 namespace ft {
 
@@ -318,5 +317,3 @@ namespace ft {
 		_size = 0;
 	}
 }
-
-#endif

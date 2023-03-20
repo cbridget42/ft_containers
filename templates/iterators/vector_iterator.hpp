@@ -1,5 +1,4 @@
-#ifndef VECTOR_ITERATOR_HPP
-#define VECTOR_ITERATOR_HPP
+#pragma once
 
 #define DIF_TYPE vector_iterator::difference_type
 
@@ -126,5 +125,3 @@ namespace ft {
 		return lhs.base() - rhs.base();
 	}
 }
-
-#endif

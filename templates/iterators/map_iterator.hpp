@@ -1,5 +1,4 @@
-#ifndef MAP_ITERATOR_HPP
-#define MAP_ITERATOR_HPP
+#pragma once
 
 namespace ft {
 	template <class T, class N>
@@ -106,5 +105,3 @@ namespace ft {
 	}
 
 }
-
-#endif

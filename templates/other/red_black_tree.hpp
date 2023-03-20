@@ -1,5 +1,4 @@
-#ifndef RED_BLACK_TREE_HPP
-#define RED_BLACK_TREE_HPP
+#pragma once
 
 #include <iostream>
 
@@ -101,5 +100,3 @@ namespace ft {
 }
 
 #include "rbt_functions.hpp"
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NODE_HPP
-#define NODE_HPP
+#pragma once
 
 namespace ft {
 
@@ -30,5 +29,3 @@ namespace ft {
 	};
 
 }
-
-#endif

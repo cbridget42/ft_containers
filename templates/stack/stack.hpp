@@ -1,5 +1,4 @@
-#ifndef STACK_HPP
-#define STACK_HPP
+#pragma once
 
 #include "../vector/vector.hpp"
 
@@ -47,5 +46,3 @@ namespace ft {
 		return *this;
 	}
 }
-
-#endif

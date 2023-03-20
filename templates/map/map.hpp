@@ -1,5 +1,4 @@
-#ifndef MAP_HPP
-#define MAP_HPP
+#pragma once
 
 #include <functional>
 #include <memory>
@@ -291,5 +290,3 @@ namespace ft {
 		lhs.swap(rhs);
 	}
 }
-
-#endif

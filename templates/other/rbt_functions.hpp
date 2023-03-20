@@ -1,5 +1,4 @@
-#ifndef RBT_FUNCTIONS_HPP
-#define RBT_FUNCTIONS_HPP
+#pragma once
 
 namespace ft {
 
@@ -339,5 +338,3 @@ namespace ft {
 	}
 
 }
-
-#endif

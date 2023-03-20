@@ -1,5 +1,4 @@
-#ifndef UTILITY_HPP
-#define UTILITY_HPP
+#pragma once
 
 namespace ft {
 	template<class T1, class T2>
@@ -66,5 +65,3 @@ namespace ft {
 		return !(lhs < rhs);
 	}
 }
-
-#endif

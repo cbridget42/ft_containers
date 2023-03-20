@@ -1,5 +1,4 @@
-#ifndef ALGORITHM_HPP
-#define ALGORITHM_HPP
+#pragma once
 
 namespace ft {
 	template<class InputIt1, class InputIt2>
@@ -44,5 +43,3 @@ namespace ft {
 		return true;
 	}
 }
-
-#endif

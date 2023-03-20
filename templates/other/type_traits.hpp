@@ -1,5 +1,4 @@
-#ifndef TYPE_TRAITS_HPP
-#define TYPE_TRAITS_HPP
+#pragma once
 
 #include <limits>
 
@@ -18,5 +17,3 @@ namespace ft {
 	template <typename T>
 	const bool is_integral<T>::value = std::numeric_limits<T>::is_integer;
 }
-
-#endif
