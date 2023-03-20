@@ -93,7 +93,12 @@ namespace ft {
 		if (count == 0)
 			return _VEC::iterator(const_cast<T*>(pos.base()));
 		else if (_capacity < _size + count) {
-			T* tmp = _allocator.allocate((_capacity + count) * 2);
+			size_type new_capacity;
+			if (_size + count > _capacity * 2)
+				new_capacity = count + _size;
+			else
+				new_capacity = _capacity * 2;
+			T* tmp = _allocator.allocate(new_capacity);
 			size_type j, i;
 			i = j = 0;
 			typename _VEC::iterator it;
@@ -108,10 +113,10 @@ namespace ft {
 			} catch (...) {
 				for (j = 0; j < i; ++j)
 					_allocator.destroy(tmp + j);
-				_allocator.deallocate(tmp, (_capacity + count) * 2);
+				_allocator.deallocate(tmp, new_capacity);
 				throw;
 			}
-			fix_vec(tmp, count);
+			fix_vec(tmp, count, new_capacity);
 			return it;
 		}
 		size_type i = pos.base() - _ptr;
@@ -137,7 +142,12 @@ namespace ft {
 		if (count == 0)
 			return _VEC::iterator(const_cast<T*>(pos.base()));
 		else if (_capacity < _size + count) {
-			T* tmp = _allocator.allocate((_capacity + count) * 2);
+			size_type new_capacity;
+			if (_size + count > _capacity * 2)
+				new_capacity = count + _size;
+			else
+				new_capacity = _capacity * 2;
+			T* tmp = _allocator.allocate(new_capacity);
 			size_type j, i;
 			i = j = 0;
 			typename _VEC::iterator it;
@@ -152,10 +162,10 @@ namespace ft {
 			} catch (...) {
 				for (j = 0; j < i; ++j)
 					_allocator.destroy(tmp + j);
-				_allocator.deallocate(tmp, (_capacity + count) * 2);
+				_allocator.deallocate(tmp, new_capacity);
 				throw;
 			}
-			fix_vec(tmp, count);
+			fix_vec(tmp, count, new_capacity);
 			return it;
 		}
 		size_type i = pos.base() - _ptr;
@@ -207,7 +217,7 @@ namespace ft {
 
 	template<class T, class Allocator>
 	void _VEC::copy_array(const vector& other, size_type new_capacity) {
-		if (new_capacity) {
+//		if (new_capacity) {
 			T* tmp = _allocator.allocate(new_capacity);
 			for (size_type i = 0; i < other._size; ++i) {
 				try {
@@ -226,20 +236,20 @@ namespace ft {
 			_ptr = tmp;
 			_capacity = new_capacity;
 			_size = other._size;
-		} else {
-			_capacity = _size = 0;
-			_ptr = 0;
-		}
+//		} else {
+//			_capacity = _size = 0;
+//			_ptr = 0;
+//		}
 	}
 
 	template<class T, class Allocator>
-	void _VEC::fix_vec(T* tmp, size_type count) {
+	void _VEC::fix_vec(T* tmp, size_type count, size_type new_capacity) {
 		for (size_type i = 0; i < _size; ++i)
 			_allocator.destroy(_ptr + i);
 		if (_capacity)
-			_allocator.deallocate(_ptr, (_capacity + count) * 2);
+			_allocator.deallocate(_ptr, _capacity);
 		_ptr = tmp;
-		_capacity = (_capacity + count) * 2;
+		_capacity = new_capacity;
 		_size += count;
 	}
 

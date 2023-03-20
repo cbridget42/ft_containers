@@ -88,7 +88,7 @@ namespace ft {
 
 			private:
 				void		copy_array(const vector& other, size_type new_capacity);
-				void		fix_vec(T* tmp, size_type count);
+				void		fix_vec(T* tmp, size_type count, size_type new_capacity);
 				template<class U>
 				void		insert_range_iter(T* ptr, size_type &i, size_type count, U& value);
 				template<class U>
