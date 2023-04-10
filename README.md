@@ -8,7 +8,7 @@ template library.
 You have to take the structure of each standard container as reference.  
 
 ### Requirements:
-* vector (You don’t have to do the vector<bool> specialization.)
+* vector (You don’t have to do the vector bool specialization.)
 * map
 * stack (It will use your vector class as default underlying container.  
   But it must still be compatible with other containers, the STL ones included.)
@@ -23,16 +23,16 @@ You have to take the structure of each standard container as reference.
 You can see the full assignment here [subject](https://github.com/cbridget42/ft_containers/blob/main/subject/en.subject.pdf)
 
 ### Usage:
-Include the header of the container you need and use it like a usual STL container!
-simple code example:
+Include the header of the container you need and use it like a usual STL container!  
+Simple code example:
 ```c++
 #include <iostream>
 #include "vector.hpp"
 
 int main() {
 	ft::vector<int> v(5, 42);
-	std::cout << v.back() << std::endl;
-	std::cout << v.size() << std::endl;
+	std::cout << v.back() << '\n';
+	std::cout << v.size() << '\n';
 	return 0;
 }
 ```
