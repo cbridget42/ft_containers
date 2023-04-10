@@ -8,12 +8,10 @@ template library.
 You have to take the structure of each standard container as reference.  
 
 ### Requirements:
-* vector
-+ You don’t have to do the vector<bool> specialization.
+* vector (You don’t have to do the vector<bool> specialization.)
 * map
-* stack
-+ It will use your vector class as default underlying container.  
-  But it must still be compatible with other containers, the STL ones included.
+* stack (It will use your vector class as default underlying container.  
+  But it must still be compatible with other containers, the STL ones included.)
 * std::iterator_traits
 * std::reverse_iterator
 * std::enable_if
@@ -24,7 +22,7 @@ You have to take the structure of each standard container as reference.
 
 You can see the full assignment here [subject](https://github.com/cbridget42/ft_containers/blob/main/subject/en.subject.pdf)
 
-#Usage:
+### Usage:
 Include the header of the container you need and use it like a usual STL container!
 simple code example:
 ```c++
